@@ -2,20 +2,13 @@
 #include <Zumo32U4.h>
 
 #include "swBatteri.h"
+#include "hovedModul.h"
 
-// put function declarations here:
-int myFunction(int, int);
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  initZumo();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  readSensorValues();
 }

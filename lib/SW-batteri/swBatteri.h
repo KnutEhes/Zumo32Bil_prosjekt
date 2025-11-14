@@ -10,5 +10,7 @@ void cycles();
 
 
 extern int batteryHealth;
+extern float fastChrargingPrice;
+extern float slowChrargingPrice;
 
 #endif

@@ -13,4 +13,7 @@ extern int batteryHealth;
 extern float fastChrargingPrice;
 extern float slowChrargingPrice;
 
+const float kSpeed = 0.5;
+const float kAcc = 1.2;
+
 #endif

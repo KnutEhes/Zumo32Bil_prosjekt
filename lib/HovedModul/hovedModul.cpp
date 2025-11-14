@@ -23,3 +23,24 @@ void readSensorValues(){
     uint16_t leftEncoderVal = encoders.getCountsLeft();
     uint16_t rightEncoder = encoders.getCountsRight();
 }
+
+Motion calculateMotion() {
+    Motion m;
+
+    float distanceL = (encoders.getCountsAndResetLeft()  / CPR) * wheelCircumference;
+    float distanceR = (encoders.getCountsAndResetRight() / CPR) * wheelCircumference;
+    float distStep = 0.5 * (distanceL + distanceR);
+
+    static float totalDistance = 0.0;  
+    static float prevSpeed = 0.0;
+
+    totalDistance += distStep;
+
+    m.distance = totalDistance;
+    m.speed = distStep;
+    m.acceleration = m.speed - prevSpeed;
+
+    prevSpeed = m.speed;
+
+    return m;
+}

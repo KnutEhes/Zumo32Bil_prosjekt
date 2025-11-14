@@ -5,10 +5,12 @@
 #include "hovedModul.h"
 
 
+
 void setup() {
   initZumo();
 }
 
 void loop() {
   readSensorValues();
+  batteryPercent();
 }

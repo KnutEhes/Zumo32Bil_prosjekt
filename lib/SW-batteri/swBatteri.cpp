@@ -1,7 +1,7 @@
 #include "swBatteri.h"
 #include "hovedModul.h"
 
-Zumo32U4Encoders encoders;
+Zumo32U4LCD lcd;
 
 int batteryHealth = 100;
 float batteryPersentVal = 100;
@@ -31,6 +31,14 @@ void batteryPercent()
     {
         Motion M = calculateMotion();
         batteryPersentVal -= kSpeed* abs(M.speed)+ kAcc* abs(M.acceleration);
+
+        lcd.clear();
+        lcd.gotoXY(0,0);
+        lcd.println(batteryPersentVal);
+        lcd.println(M.acceleration);
+        lcd.println(M.speed);
+        lcd.println(M.distance);
+
         lastSpeedCheck = time;
     }
 }

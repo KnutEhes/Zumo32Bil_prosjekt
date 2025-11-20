@@ -3,37 +3,50 @@
 
 #include <Arduino.h>
 
-// ----------------------
-// Globale variabler
-// ----------------------
-extern int batteryCapacity;  
-extern int currentCharge;    
-extern int prevCharge;       
+// ----------------------------------------------------------
+// GLOBALE VARIABLER
+// ----------------------------------------------------------
+const float minBatteryCapacity = 200.0;
+extern float batteryCapacity;
+extern float currentCharge;
 
-extern int balance;          
+const float fastChargeRate = 10.0;
+const float slowChargeRate = 3.0;
+const float drainRate = 30.0;
 
+extern float batteryPercent;
+extern float prevBatteryPercent;
+
+extern float balance;
+
+extern float speed;
+
+const unsigned long updateInterval = 200;
+extern unsigned long lastBatteryUpdate;
 extern unsigned long currentTime;
 
 extern bool fastCharging;
 extern bool slowCharging;
 
-// ----------------------
-// Funksjonsprototyper
-// ----------------------
 
-// Hent batteriprosent (0–100)
+// ----------------------------------------------------------
+// FUNKSJONER
+// ----------------------------------------------------------
+
+// Batteriprosent
 float getBatteryPercent();
 
-// Fast-charging pris som funksjon av tid
+// Prisfunksjoner
 float getFastChargingPrice(unsigned long time);
-
-// Slow-charging pris som funksjon av tid
 float getSlowChargingPrice(unsigned long time);
 
-// Oppdater helsen på batteriet
-void batteryHealth();
+// Helseberegning
+void batteryHealth(float newPercent, float oldPercent);
 
-// Hovedfunksjon for å håndtere lading/draining
+// Debug-utskrift
+void debugPrint();
+
+// Hovedsystem – kall denne i loop()
 void battery();
 
 #endif

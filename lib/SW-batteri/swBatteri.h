@@ -6,6 +6,21 @@
 #include <Wire.h>
 
 
+extern int batteryCapacity;
+extern int currentCharge;
+
+
+extern int balance;
+
+float getBatteryPercent(int batteryChargeLokal, int batteryCapacityLokal);
+
+float getFastChargingPrice(unsigned long time);
+float getSlowChargingPrice(unsigned long time);
+
+void batteryDrain();
+
+/*
+
 void cycles();
 
 void batteryPercent();
@@ -18,5 +33,8 @@ extern float batteryPersentVal;
 
 const float kSpeed = 0.5;
 const float kAcc = 1.2;
+
+*/
+
 
 #endif

@@ -27,6 +27,8 @@ void readSensorValues(){
     */
 }
 
+
+/*
 Motion calculateMotion() {
     Motion m;
 
@@ -47,3 +49,5 @@ Motion calculateMotion() {
 
     return m;
 }
+
+*/

@@ -12,7 +12,7 @@ extern int currentCharge;
 
 extern int balance;
 
-float getBatteryPercent(int batteryChargeLokal, int batteryCapacityLokal);
+float getBatteryPercent();
 
 float getFastChargingPrice(unsigned long time);
 float getSlowChargingPrice(unsigned long time);

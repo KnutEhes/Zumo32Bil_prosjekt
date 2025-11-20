@@ -2,39 +2,38 @@
 #define SWBATTERI_H
 
 #include <Arduino.h>
-#include <Zumo32U4.h>
-#include <Wire.h>
 
+// ----------------------
+// Globale variabler
+// ----------------------
+extern int batteryCapacity;  
+extern int currentCharge;    
+extern int prevCharge;       
 
-extern int batteryCapacity;
-extern int currentCharge;
+extern int balance;          
 
+extern unsigned long currentTime;
 
-extern int balance;
+extern bool fastCharging;
+extern bool slowCharging;
 
+// ----------------------
+// Funksjonsprototyper
+// ----------------------
+
+// Hent batteriprosent (0–100)
 float getBatteryPercent();
 
+// Fast-charging pris som funksjon av tid
 float getFastChargingPrice(unsigned long time);
+
+// Slow-charging pris som funksjon av tid
 float getSlowChargingPrice(unsigned long time);
 
-void batteryDrain();
+// Oppdater helsen på batteriet
+void batteryHealth();
 
-/*
-
-void cycles();
-
-void batteryPercent();
-
-
-extern int batteryHealth;
-extern float fastChrargingPrice;
-extern float slowChrargingPrice;
-extern float batteryPersentVal;
-
-const float kSpeed = 0.5;
-const float kAcc = 1.2;
-
-*/
-
+// Hovedfunksjon for å håndtere lading/draining
+void battery();
 
 #endif

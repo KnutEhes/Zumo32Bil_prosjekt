@@ -1,5 +1,4 @@
 #include "swBatteri.h"
-#include "hovedModul.h"
 /*
 Batterikapasiteten er 1000Wh/1kWh
 Prisfunksjon sier pris for 1Wh
@@ -18,7 +17,6 @@ int prevCharge = 1000;      // hvor mange Wh som var i batteriet forrige runde i
 
 int balance = 10000; // slado i kr
 
-unsigned long lastBatteryUpdate = 0;
 unsigned long currentTime = 0;
 
 bool fastCharging = false;
@@ -47,103 +45,65 @@ void batteryHealth()
 {
     if ((currentCharge < 20 && prevCharge > 20) || (currentCharge < 80 && prevCharge > 80))
     {
-        batteryCapacity -= 3;
+        batteryCapacity -= 5;
     }
-    if (fastCharging){
-        
+    if (fastCharging)
+    {
+        batteryCapacity -= 10;
     }
 }
 
-void batteryDrain()
+void battery()
 {
     currentTime = millis();
-    if (!fastCharging && !slowCharging)
+    unsigned long lastBatteryUpdate = 0;
+    float chargePrice = 0;
+
+    if (fastCharging)
+    {
+        chargePrice = getFastChargingPrice(currentTime);
+        batteryHealth();
+
+        while ((currentCharge < batteryCapacity) || (balance > 0)){
+
+            if (currentTime - lastBatteryUpdate > 10){
+                currentCharge += 1;
+                balance -= chargePrice;
+                lastBatteryUpdate = currentTime;
+            }
+        }
+
+        fastCharging = false;
+    }
+
+    else if (slowCharging)
+    {
+        chargePrice = getSlowChargingPrice(currentTime);
+
+        while ((currentCharge < batteryCapacity) || (balance > 0)){
+            
+            if (currentTime - lastBatteryUpdate > 50){
+                currentCharge += 1;
+                balance -= chargePrice;
+                lastBatteryUpdate = currentTime;
+            }
+        }
+
+        slowCharging = false;
+    }
+
+    else
     {
         if (currentTime - lastBatteryUpdate > 100)
         {
-            currentCharge -= 0; // funksjon for batteriDraining her
+            currentCharge -= 2; // funksjon for batteriDraining her
 
             batteryHealth();
 
             prevCharge = currentCharge;
         }
     }
-}
-
-void batteryCharge()
-{
-    while ((currentCharge < batteryCapacity) || (balance > 0)){
-        if (fastCharging)
-        {
-            
-        }
-        else if (slowCharging)
-        {
-
-        }
-    }
-}
-
-/*
-
-
-int batteryHealth = 100;
-float batteryPersentVal = 100;
-float prevBatteryPersentVal = 100;
-
-float balance = 1000;
-unsigned long lastBalanceCheck = 0;
-
-float acceleration = 0;
-int speed = 0;
-
-unsigned long lastSpeedCheck = 0;
-
-// Ladepriser som funskjon av tid
-float fastChrargingPrice = 1.5 * sin(0.0008 * time + 5) + 8 + 0.00001 * time; //pris for 10%
-float slowChargingPrice = 1.5 * sin(0.001 * time + 13) + 5 + 0.00001 * time; //
-
-//Batteriet kan ikke lade opp høyere enn batteryHealth
-void cycles()
-{
-    if((batteryPersentVal < 20 && prevBatteryPersentVal > 20) || (prevBatteryPersentVal > 80 && prevBatteryPersentVal < 80)){
-        batteryHealth -= 1;
-    }
 
 }
 
 
-void charging()
-{
-    if(charging){
-        if (millis() - lastCharge > 20){
-
-        }
-        saldo = saldo -
-    }
-}
-
-float distanceL = 0;
-
-void batteryPercent()
-{
-    if (time - lastSpeedCheck > 1000)
-    {
-        Motion M = calculateMotion();
-        batteryPersentVal -= kSpeed* abs(M.speed)+ kAcc* abs(M.acceleration);
-
-        cycles();
-
-        lcd.clear();
-        lcd.gotoXY(0,0);
-        lcd.println(batteryPersentVal);
-        lcd.println(M.acceleration);
-        lcd.println(M.speed);
-        lcd.println(M.distance);
-
-        prevBatteryPersentVal = batteryPersentVal;
-        lastSpeedCheck = time;
-    }
-}
-
-*/

@@ -5,7 +5,7 @@
 #include "PID.h"
 #include "swBatteri.h"
 
-
+Zumo32U4OLED oled;
 
 void setup() {
   Serial.begin(9600);

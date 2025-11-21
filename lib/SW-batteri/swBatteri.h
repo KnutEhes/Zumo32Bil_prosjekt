@@ -28,6 +28,7 @@ extern unsigned long currentTime;
 extern bool fastCharging;
 extern bool slowCharging;
 
+extern int batteryLvl;
 
 // ----------------------------------------------------------
 // FUNKSJONER

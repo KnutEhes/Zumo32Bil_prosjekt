@@ -1,4 +1,5 @@
 #include "swBatteri.h"
+#include "buzzAndLed.h"
 
 // Batterikapasitet og nåværende ladning
 float batteryCapacity = 1000.0;
@@ -12,7 +13,7 @@ float prevBatteryPercent = 100.0;
 float balance = 10000.0;
 
 // Bilens fart (brukes for debugging)
-//float speed = 100.0;
+float speed = 100.0;
 
 // Tidsvariabler for å styre oppdatering
 unsigned long lastBatteryUpdate = 0;
@@ -22,6 +23,7 @@ unsigned long currentTime = 0;
 bool fastCharging = false;
 bool slowCharging = false;
 
+int batteryLvl = 0;
 
 // ----------------------------------------------------------
 // PROSENT
@@ -97,7 +99,7 @@ void battery()
     if (fastCharging)
     {
         chargePrice = getFastChargingPrice(currentTime); // hent pris for hurtiglading
-        //speed = 0; // ikke kjør mens du lader (debugging)
+        speed = 0; // ikke kjør mens du lader (debugging)
 
         if (currentTime - lastBatteryUpdate >= updateInterval){
             
@@ -110,7 +112,7 @@ void battery()
             // Stopp lading hvis full eller blakk
             if (currentCharge >= batteryCapacity || balance == 0){
                 fastCharging = false;
-                //speed = 100; // bilen kan kjøre igjen (debugging)
+                speed = 100; // bilen kan kjøre igjen (debugging)
             }
 
             lastBatteryUpdate = currentTime;
@@ -124,7 +126,7 @@ void battery()
     else if (slowCharging)
     {
         chargePrice = getSlowChargingPrice(currentTime); // pris for sakte lading
-        //speed = 0; // ikke kjør mens du lader (debugging)
+        speed = 0; // ikke kjør mens du lader (debugging)
 
         if (currentTime - lastBatteryUpdate >= updateInterval){
             
@@ -137,7 +139,7 @@ void battery()
             // Stopp lading hvis full eller blakk
             if (currentCharge >= batteryCapacity || balance == 0){
                 slowCharging = false;
-                //speed = 100; (debugging)
+                speed = 100; //(debugging)
             }
 
             lastBatteryUpdate = currentTime;
@@ -157,18 +159,19 @@ void battery()
 
             if (currentCharge < 0) currentCharge = 0;
 
-            /* Kode for Debugging
+            // Kode for Debugging
             if (currentCharge == 0) speed = 0;
 
             if (currentCharge < 100) fastCharging = true;
-            */
-
+            
             lastBatteryUpdate = currentTime;
         }
     }
 
     // Skriv ut status
     debugPrint();
+
+    batteryBuzz();
 
     // Oppdater prosent og helse
     batteryPercent = getBatteryPercent();

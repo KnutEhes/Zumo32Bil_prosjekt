@@ -7,6 +7,8 @@
 //Define her
 
 extern unsigned long chargeCoolDownValue;
+extern unsigned long chargeCoolDownTime;
+extern bool chargerPresent;
 
 void proximitySense(void);
 

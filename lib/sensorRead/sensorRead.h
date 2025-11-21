@@ -7,7 +7,6 @@
 #include <Arduino.h>
 
 void readSensors(void);
-void initProxSensor(void);
 
 extern int rightProxSensorValue;
 extern int leftProxSensorValue;

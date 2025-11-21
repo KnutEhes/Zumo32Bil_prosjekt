@@ -1,8 +1,7 @@
 #include "swBatteri.h"
 #include "buzzAndLed.h"
-
-Zumo32U4OLED display;
-#include <EVCharge.h>
+#include "init.h"
+#include "EVCharge.h"
 
 // Batterikapasitet og nåværende ladning
 float batteryCapacity = 1000.0;
@@ -84,9 +83,6 @@ void debugPrint(){
     Serial.print("kr    Battery: ");    Serial.print(getBatteryPercent()); 
     Serial.print("%"); Serial.print("    SlowChargingPrice: "); Serial.print(getSlowChargingPrice(currentTime));
     Serial.print("kr    FastChargingPrice: "); Serial.print(getFastChargingPrice(currentTime)); Serial.println("kr");
-    display.clear();
-    display.print(batteryPercent);
-    display.display();
     
 }
 
@@ -117,8 +113,9 @@ void battery()
             if (balance < 0) balance = 0;
 
             // Stopp lading hvis full eller blakk
-            if (currentCharge >= batteryCapacity || balance == 0){
+            if (currentCharge >= batteryCapacity || balance == 0 || !chargerPresent){
                 fastCharging = false;
+                chargerPresent = false;
                 chargeCoolDownValue = currentTime;
                 //speed = 100; // bilen kan kjøre igjen (debugging)
             }
@@ -145,8 +142,9 @@ void battery()
             if (balance < 0) balance = 0;
 
             // Stopp lading hvis full eller blakk
-            if (currentCharge >= batteryCapacity || balance == 0){
+            if (currentCharge >= batteryCapacity || balance == 0 || !chargerPresent){
                 slowCharging = false;
+                chargerPresent = false;
                 chargeCoolDownValue = currentTime;
                 //speed = 100; (debugging)
             }
@@ -183,7 +181,7 @@ void battery()
 
     // Oppdater prosent og helse
     batteryPercent = getBatteryPercent();
-    batteryBuzz();
+    //batteryBuzz();
     batteryHealth(batteryPercent, prevBatteryPercent);
     prevBatteryPercent = batteryPercent;
 }

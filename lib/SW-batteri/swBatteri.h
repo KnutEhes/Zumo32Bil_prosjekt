@@ -1,0 +1,52 @@
+#ifndef SWBATTERI_H
+#define SWBATTERI_H
+
+#include <Arduino.h>
+
+// ----------------------------------------------------------
+// GLOBALE VARIABLER
+// ----------------------------------------------------------
+const float minBatteryCapacity = 200.0;
+extern float batteryCapacity;
+extern float currentCharge;
+
+const float fastChargeRate = 10.0;
+const float slowChargeRate = 3.0;
+const float drainRate = 30.0;
+
+extern float batteryPercent;
+extern float prevBatteryPercent;
+
+extern float balance;
+
+extern float speed;
+
+const unsigned long updateInterval = 200;
+extern unsigned long lastBatteryUpdate;
+extern unsigned long currentTime;
+
+extern bool fastCharging;
+extern bool slowCharging;
+
+
+// ----------------------------------------------------------
+// FUNKSJONER
+// ----------------------------------------------------------
+
+// Batteriprosent
+float getBatteryPercent();
+
+// Prisfunksjoner
+float getFastChargingPrice(unsigned long time);
+float getSlowChargingPrice(unsigned long time);
+
+// Helseberegning
+void batteryHealth(float newPercent, float oldPercent);
+
+// Debug-utskrift
+void debugPrint();
+
+// Hovedsystem – kall denne i loop()
+void battery();
+
+#endif

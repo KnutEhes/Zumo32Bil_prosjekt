@@ -162,7 +162,7 @@ void battery()
         if (currentTime - lastBatteryUpdate >= 100)
         {
             // Tapp batteriet basert på fart
-            currentCharge -= 300 / drainRate; //Midlertidig funksjon for drain
+            currentCharge -= 100 / drainRate; //Midlertidig funksjon for drain
 
             if (currentCharge < 0) currentCharge = 0;
 

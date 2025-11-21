@@ -1,4 +1,5 @@
 #include "swBatteri.h"
+#include <EVCharge.h>
 
 // Batterikapasitet og nåværende ladning
 float batteryCapacity = 1000.0;
@@ -110,6 +111,7 @@ void battery()
             // Stopp lading hvis full eller blakk
             if (currentCharge >= batteryCapacity || balance == 0){
                 fastCharging = false;
+                chargeCoolDownValue = currentTime;
                 //speed = 100; // bilen kan kjøre igjen (debugging)
             }
 
@@ -137,6 +139,7 @@ void battery()
             // Stopp lading hvis full eller blakk
             if (currentCharge >= batteryCapacity || balance == 0){
                 slowCharging = false;
+                chargeCoolDownValue = currentTime;
                 //speed = 100; (debugging)
             }
 

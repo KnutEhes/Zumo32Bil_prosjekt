@@ -6,6 +6,8 @@
 
 //Define her
 
+extern unsigned long chargeCoolDownValue;
+
 void proximitySense(void);
 
 #endif

@@ -12,11 +12,9 @@
 
 #include "Skjerm.h"
 #include "swBatteri.h"
+#include "sensorRead.h"
 
 Zumo32U4OLED display;
-Zumo32U4ButtonA buttonA;
-Zumo32U4ButtonB buttonB;
-Zumo32U4ButtonC buttonC;
 
 int batteri = batteryPercent;
 int leftSpeed = 100;

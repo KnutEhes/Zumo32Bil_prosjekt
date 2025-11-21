@@ -6,10 +6,9 @@
 #include "sensorRead.h"
 
 #include <Wire.h>
-
+#include <Skjerm.h>
 #include "PID.h"
 #include "swBatteri.h"
-
 
 
 void setup() {
@@ -17,6 +16,9 @@ void setup() {
   Serial.begin(9600);
   initProxSensor();
   //int result = myFunction(2, 3);
+  buttonA.waitForButton();
+  buttonB.waitForButton();
+  buttonC.waitForButton();
 }
 
 void loop() {
@@ -24,6 +26,15 @@ void loop() {
   readSensors();
   proximitySense();
   battery();
+  if(buttonA.isPressed()){
+  startSkjerm();
+  delay(10000);
+  kalibrering();
+  delay(10000);
+  kjoring();
+  delay(10000);
+  ladestasjon();
+}
   
 
 }

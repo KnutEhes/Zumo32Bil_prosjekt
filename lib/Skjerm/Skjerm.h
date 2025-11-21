@@ -10,10 +10,10 @@
 //function declaration
 void startSkjerm();
 void kalibrering();
-void kjøring();
+void kjoring();
 void ladestasjon();
 void lyskryss();
-extern int batteriNivå;
+extern int batteri;
 
 
 #endif // Skjerm_h

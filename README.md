@@ -13,7 +13,7 @@ Ekstrapoeng for:
 
 
 2. SW-batteri og energihåndtering
-- Emulerer et batteri som lades ut ved kjøring og lades opp ved ladestasjoner.
+- Emulerer et batteri som lades ut ved kjøring og lades opp ved ladestasjoner. (50%)
 - Skal varsle om lavt batterinivå.
 - Rapporterer batteristatus til resten av systemet.
 
@@ -24,7 +24,7 @@ Ekstrapoeng for:
 
 3. Ladeløsning
 - Bilen skal kunne detektere en "ladestasjon".
-- Skal stoppe ved stasjonen, lade, og fullføre en enkel betalingsprosess.
+- Skal stoppe ved stasjonen, lade, og fullføre en enkel betalingsprosess. (80%)
 - Ladeløsningen trenger ikke være fysisk.
 
 Ekstrapoeng for:

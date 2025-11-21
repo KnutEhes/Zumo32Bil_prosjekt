@@ -1,6 +1,8 @@
 #include "swBatteri.h"
 #include "buzzAndLed.h"
 
+Zumo32U4OLED display;
+
 // Batterikapasitet og nåværende ladning
 float batteryCapacity = 1000.0;
 float currentCharge = 1000.0;
@@ -13,7 +15,7 @@ float prevBatteryPercent = 100.0;
 float balance = 10000.0;
 
 // Bilens fart (brukes for debugging)
-float speed = 100.0;
+//float speed = 100.0;
 
 // Tidsvariabler for å styre oppdatering
 unsigned long lastBatteryUpdate = 0;
@@ -81,6 +83,10 @@ void debugPrint(){
     Serial.print("kr    Battery: ");    Serial.print(getBatteryPercent()); 
     Serial.print("%"); Serial.print("    SlowChargingPrice: "); Serial.print(getSlowChargingPrice(currentTime));
     Serial.print("kr    FastChargingPrice: "); Serial.print(getFastChargingPrice(currentTime)); Serial.println("kr");
+    display.clear();
+    display.print(batteryPercent);
+    display.display();
+    
 }
 
 
@@ -99,7 +105,7 @@ void battery()
     if (fastCharging)
     {
         chargePrice = getFastChargingPrice(currentTime); // hent pris for hurtiglading
-        speed = 0; // ikke kjør mens du lader (debugging)
+        //speed = 0; // ikke kjør mens du lader (debugging)
 
         if (currentTime - lastBatteryUpdate >= updateInterval){
             
@@ -112,7 +118,7 @@ void battery()
             // Stopp lading hvis full eller blakk
             if (currentCharge >= batteryCapacity || balance == 0){
                 fastCharging = false;
-                speed = 100; // bilen kan kjøre igjen (debugging)
+                //speed = 100; // bilen kan kjøre igjen (debugging)
             }
 
             lastBatteryUpdate = currentTime;
@@ -126,7 +132,7 @@ void battery()
     else if (slowCharging)
     {
         chargePrice = getSlowChargingPrice(currentTime); // pris for sakte lading
-        speed = 0; // ikke kjør mens du lader (debugging)
+        //speed = 0; // ikke kjør mens du lader (debugging)
 
         if (currentTime - lastBatteryUpdate >= updateInterval){
             
@@ -139,7 +145,7 @@ void battery()
             // Stopp lading hvis full eller blakk
             if (currentCharge >= batteryCapacity || balance == 0){
                 slowCharging = false;
-                speed = 100; //(debugging)
+                //speed = 100; //(debugging)
             }
 
             lastBatteryUpdate = currentTime;
@@ -155,15 +161,15 @@ void battery()
         if (currentTime - lastBatteryUpdate >= 100)
         {
             // Tapp batteriet basert på fart
-            currentCharge -= 100 / drainRate; //Midlertidig funksjon for drain
+            currentCharge -= 300 / drainRate; //Midlertidig funksjon for drain
 
             if (currentCharge < 0) currentCharge = 0;
 
-            // Kode for Debugging
+            /* Kode for Debugging
             if (currentCharge == 0) speed = 0;
 
             if (currentCharge < 100) fastCharging = true;
-            
+            */
             lastBatteryUpdate = currentTime;
         }
     }
@@ -171,10 +177,10 @@ void battery()
     // Skriv ut status
     debugPrint();
 
-    batteryBuzz();
 
     // Oppdater prosent og helse
     batteryPercent = getBatteryPercent();
+    batteryBuzz();
     batteryHealth(batteryPercent, prevBatteryPercent);
     prevBatteryPercent = batteryPercent;
 }

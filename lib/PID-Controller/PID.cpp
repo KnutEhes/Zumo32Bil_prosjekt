@@ -1,7 +1,5 @@
-#include <Wire.h>
-#include <Zumo32U4.h>
 #include "PID.h"
-Zumo32U4LineSensors lineSensors;
+#include "init.h"
 
 // PID constants (tune these for your robot)
 float Kp = 1.0f;
@@ -21,9 +19,7 @@ uint16_t sensorValues[5];
 
 
 // Initialize sensors (call from setup() in main file)
-void initLineSensors() {
-  lineSensors.initFiveSensors();
-}
+
 
 // Pure line-following function: reads sensors and returns desired speeds
 MotorSpeeds lineFollower() {

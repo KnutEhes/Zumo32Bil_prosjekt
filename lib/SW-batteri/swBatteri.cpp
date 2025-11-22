@@ -2,6 +2,7 @@
 #include "buzzAndLed.h"
 #include "init.h"
 #include "EVCharge.h"
+#include "PID.h"
 
 // Batterikapasitet og nåværende ladning
 float batteryCapacity = 1000.0;
@@ -25,7 +26,11 @@ unsigned long currentTime = 0;
 bool fastCharging = false;
 bool slowCharging = false;
 
-int batteryLvl = 0;
+//(s.left + s.right) / 2.0;
+float speed = 0;
+float prevSpeed = 0;
+
+float acceleration = 0;
 
 // ----------------------------------------------------------
 // PROSENT
@@ -161,8 +166,12 @@ void battery()
     {
         if (currentTime - lastBatteryUpdate >= 100)
         {
+            MotorSpeeds s = lineFollower();
+            speed = (s.left + s.right) / 2.0;
+            acceleration = (speed-prevSpeed)/0.1;
+
             // Tapp batteriet basert på fart
-            currentCharge -= 100 / drainRate; //Midlertidig funksjon for drain
+            currentCharge -= (speedDrainRate*speed + accDrainRate*acceleration) / drainRate; //Midlertidig funksjon for drain
 
             if (currentCharge < 0) currentCharge = 0;
 
@@ -172,6 +181,7 @@ void battery()
             if (currentCharge < 100) fastCharging = true;
             */
             lastBatteryUpdate = currentTime;
+            prevSpeed = speed;
         }
     }
 

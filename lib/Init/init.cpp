@@ -8,13 +8,14 @@ Zumo32U4ButtonC buttonC;
 Zumo32U4Buzzer buzzer;
 
 Zumo32U4OLED display;
+Zumo32U4LineSensors lineSensors;
+
 
 void initAll(){
 
     Serial.begin(9600);
     proxSensor.initFrontSensor();
     display.init();
-    initLineSensors();
-    initProxSensor();
+    lineSensors.initFiveSensors();
 
 }

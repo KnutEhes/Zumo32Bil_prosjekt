@@ -5,6 +5,10 @@
 #ifndef PID_H
 #define PID_H
 
+#include "Zumo32U4.h"
+#include "Wire.h"
+#include "Arduino.h"
+
 // Struct for returning both motor speeds
 struct MotorSpeeds {
   int16_t left;
@@ -12,7 +16,6 @@ struct MotorSpeeds {
 };
 
 // These are just declarations (prototypes)
-void initLineSensors();
 MotorSpeeds lineFollower();
 
 #endif //PID_H

@@ -7,6 +7,7 @@
 #include "swBatteri.h"
 #include "init.h"
 #include "PID.h"
+#include "buzzAndLed.h"
 
 
 
@@ -14,7 +15,7 @@
 void setup() {
   
   initAll();
-  
+
 }
 
 void loop() {

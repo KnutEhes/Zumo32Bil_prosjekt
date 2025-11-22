@@ -14,6 +14,8 @@ extern Zumo32U4ButtonC buttonC;
 extern Zumo32U4Buzzer buzzer;
 
 extern Zumo32U4OLED display;
+extern Zumo32U4LineSensors lineSensors;
+
 
 
 void initAll();

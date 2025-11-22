@@ -14,5 +14,7 @@ void initAll(){
     Serial.begin(9600);
     proxSensor.initFrontSensor();
     display.init();
+    initLineSensors();
+    initProxSensor();
 
 }

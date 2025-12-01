@@ -14,98 +14,101 @@
 #include "swBatteri.h"
 
 Zumo32U4OLED display;
-Zumo32U4ButtonA buttonA;
-Zumo32U4ButtonB buttonB;
-Zumo32U4ButtonC buttonC;
+extern Zumo32U4ButtonA buttonA;
+extern Zumo32U4ButtonB buttonB;
+extern Zumo32U4ButtonC buttonC;
 
 int batteri = batteryPercent;
 int leftSpeed = 100;
 int rightSpeed = 100;
 void startSkjerm(){
+    display.setLayout21x8();
     display.clear();
     display.gotoXY(0, 0);
-    display.print("Bilen er klar til kalibrering!");
+    display.print("Bilen er klar");
     display.gotoXY(0, 1);
-    display.print("Sett bilen på tapen og trykk på knapp A");
+    display.print("til kalibrering");
+    display.gotoXY(0, 3);
+    display.print("Trykk knapp A");
 }
 //Hva det skal stå etter kalibrering er fullført
 void kalibrering(){
+    display.setLayout21x8();
     display.clear();
     display.gotoXY(0, 0);
-    display.print("Kalibrering fullført!");
+    display.print("Kalibrering ferdig!");
     display.gotoXY(0, 1);
-    display.print("Trykk knapp A for å starte linjefølger!");
+    display.print("Trykk knapp ");
+    display.gotoXY(0, 2);
+    display.print("for start!");
 }
 // Viser hastighet og batteri når bilen kjører
 void kjoring(){ 
+    display.setLayout21x8();
     //Fart
     display.clear();
+    display.gotoXY(0, 0);
+    display.print("Batteri: ");
+    display.print(batteri);
+    display.print("%");
     display.gotoXY(0,1);
-    display.print("Venstre");
+    display.print("Left");
     display.gotoXY(0, 2);
     display.print(leftSpeed);
-    display.gotoXY(1, 1);
-    display.print("Høyre");
-    display.gotoXY(1, 2);
+    display.gotoXY(15, 1);
+    display.print("Right");
+    display.gotoXY(15, 2);
     display.print(rightSpeed);
-    //Batteri
-    display.gotoXY(0, 0);
-    display.print("Batterinivå: ");
-    display.gotoXY(1, 0);
-    display.print(batteri);
-    display.gotoXY(2, 0);
-    display.print("%");
 }
 //Lyn-tegn når man lader
-//const unsigned char PROGEM lyn[] = {
-//0b00100,
-//0b01100,
-//0b01110,
-//0b00110,
-//0b00100,
-//0b00000,
-//0b00000,
-//0b00000
-//};
-//Lagrer Lyn i slot 0
- 
+const uint8_t lyn[5] = {
+  0b00000000,  // column 0
+  0b00100000,  // column 1
+  0b01100000,  // column 2
+  0b01110000,  // column 3
+  0b10011000   // column 4
+};
+
 
 //Ladestasjon 
 void ladestasjon(){
+    display.setLayout21x8();
     display.clear();
     display.gotoXY(0, 0);
-    display.print("Press B for hurtiglading");
+    display.print("Press B for hurtig");
     display.gotoXY(0, 1);
-    display.print("Press C for vanlig lading");
-
-    if(buttonB.isPressed()){ //hurtiglading
-        display.clear();
-        display.gotoXY(0, 0);
-        display.print("Lader:");
-        display.gotoXY(1, 0);
-        display.print("Hurtig");
-        display.gotoXY(0, 1);
-        display.print(batteri);
-        display.gotoXY(1, 1);
-        display.print("%");
-      //  display.gotoXY(10, 0);
-       // display.drawBitmap(10, 0, lyn);
-       // display.display();
-    }
-    else if(buttonC.isPressed()) { //Hvis vanlig lading
-        display.clear();
-        display.gotoXY(0, 0);
-        display.print("Lader:");
-        display.gotoXY(1, 0);
-        display.print("Vanlig");
-        display.gotoXY(0, 1);
-        display.print(batteri);
-        display.gotoXY(1, 1);
-        display.print("%");
-        display.gotoXY(10, 0);
-        display.write((byte)0); //Lyn
-    }
+    display.print("Press C for vanlig");
 }
+    void hurtigLading(){
+        display.clear();
+        display.loadCustomCharacter(lyn, 0); //Lagrer lyn i slot 0
+        display.gotoXY(0, 0);
+        display.print("Lader: Hurtig");
+        display.gotoXY(0, 1);
+        display.print(batteri);
+        display.print("%");
+        display.gotoXY(15, 0);
+        
+        for (int i = 0; i < 5; i++)
+            display.write(lyn[i]);   // draw raw bitmap columns
+
+        display.display();
+    }
+    void vanligLading(){
+        display.clear();
+        display.loadCustomCharacter(lyn, 0); //Lagrer lyn i slot 0
+        display.gotoXY(0, 0);
+        display.print("Lader: Vanlig");
+        display.gotoXY(0, 1);
+        display.print(batteri);
+        display.print("%");
+        display.gotoXY(15, 0);
+
+        for (int i = 0; i < 5; i++)
+            display.write(lyn[i]);   // draw raw bitmap columns
+
+        display.display();
+    }
 
 
 

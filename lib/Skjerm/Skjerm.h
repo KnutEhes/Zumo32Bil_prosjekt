@@ -13,9 +13,10 @@ void kalibrering();
 void kjoring();
 void ladestasjon();
 void lyskryss();
+void hurtigLading();
+void vanligLading();
+void displayChar();
 extern int batteri;
-
-
 #endif // Skjerm_h
 
 

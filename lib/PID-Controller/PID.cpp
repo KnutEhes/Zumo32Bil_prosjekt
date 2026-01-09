@@ -16,7 +16,7 @@ int16_t lastError = 0;
 long integral = 0;
 
 // Line sensor values
-uint16_t sensorValues[5];
+unsigned int sensorValues[5];
 
 
 

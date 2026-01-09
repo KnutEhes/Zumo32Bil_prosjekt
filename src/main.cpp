@@ -17,14 +17,18 @@ void setup() {
   Serial.begin(9600);
   initLineSensors();
   initProxSensor();
+  initLineSensors()
   //int result = myFunction(2, 3);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+
   readSensors();
   proximitySense();
   battery();
-  
+
+  MotorSpeeds  = lineFollower();  
+  motors.setSpeeds(s.left, s.right);
 
 }

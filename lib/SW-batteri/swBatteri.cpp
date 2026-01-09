@@ -1,5 +1,5 @@
 #include "swBatteri.h"
-#include <EVCharge.h>
+#include "EVCharge.h"
 
 // Batterikapasitet og nåværende ladning
 float batteryCapacity = 1000.0;

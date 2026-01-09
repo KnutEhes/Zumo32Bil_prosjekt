@@ -17,6 +17,8 @@ void hurtigLading();
 void vanligLading();
 void displayChar();
 extern int batteri;
+extern int leftSpeed;
+extern int rightSpeed;
 #endif // Skjerm_h
 
 

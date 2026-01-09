@@ -51,32 +51,36 @@ void kjoring(){
     display.print("Batteri: ");
     display.print(batteri);
     display.print("%");
-    display.gotoXY(0,1);
+    display.gotoXY(0,2);
     display.print("Left");
-    display.gotoXY(0, 2);
+    display.gotoXY(0, 3);
     display.print(leftSpeed);
-    display.gotoXY(15, 1);
-    display.print("Right");
     display.gotoXY(15, 2);
+    display.print("Right");
+    display.gotoXY(15, 3);
     display.print(rightSpeed);
 }
 //Lyn-tegn når man lader
-const uint8_t lyn[5] = {
-  0b00000000,  // column 0
-  0b00100000,  // column 1
-  0b01100000,  // column 2
-  0b01110000,  // column 3
-  0b10011000   // column 4
+static const char lyn[] PROGMEM = {
+    0b00100,
+    0b01100,
+    0b11100,
+    0b00111,
+    0b00110,
+    0b00100,
+    0b00000,
+    0b00000
 };
-
 
 //Ladestasjon 
 void ladestasjon(){
     display.setLayout21x8();
     display.clear();
     display.gotoXY(0, 0);
-    display.print("Press B for hurtig");
+    display.print("Velg type lading");
     display.gotoXY(0, 1);
+    display.print("Press B for hurtig");
+    display.gotoXY(0, 2);
     display.print("Press C for vanlig");
 }
     void hurtigLading(){
@@ -87,13 +91,8 @@ void ladestasjon(){
         display.gotoXY(0, 1);
         display.print(batteri);
         display.print("%");
-        display.gotoXY(15, 0);
         
-        for (int i = 0; i < 5; i++)
-            display.write(lyn[i]);   // draw raw bitmap columns
-
-        display.display();
-    }
+}
     void vanligLading(){
         display.clear();
         display.loadCustomCharacter(lyn, 0); //Lagrer lyn i slot 0
@@ -101,14 +100,9 @@ void ladestasjon(){
         display.print("Lader: Vanlig");
         display.gotoXY(0, 1);
         display.print(batteri);
-        display.print("%");
-        display.gotoXY(15, 0);
+        display.print("%");      
+}
 
-        for (int i = 0; i < 5; i++)
-            display.write(lyn[i]);   // draw raw bitmap columns
-
-        display.display();
-    }
 
 
 

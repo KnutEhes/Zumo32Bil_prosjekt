@@ -9,15 +9,14 @@
 #include <Wire.h>
 
 
-
+Zumo32U4Motors motors;
 Zumo32U4OLED oled;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  //initProxSensor();
   initLineSensors();
-  initProxSensor();
-  initLineSensors()
   //int result = myFunction(2, 3);
 }
 
@@ -28,7 +27,7 @@ void loop() {
   proximitySense();
   battery();
 
-  MotorSpeeds  = lineFollower();  
-  motors.setSpeeds(s.left, s.right);
+  MotorSpeeds s = lineFollower(); 
+  motors.setSpeeds(s.left,s.right);
 
 }

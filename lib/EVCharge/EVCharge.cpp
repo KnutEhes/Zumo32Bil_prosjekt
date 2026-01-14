@@ -7,7 +7,7 @@ unsigned long chargeCoolDownTime = 10000;
 
 bool chargerPresent = false;
 
-
+//ladedetektering
 
 void proximitySense(){
     if (rightProxSensorValue > 4 && chargeCoolDownValue < millis()-chargeCoolDownTime){     //lader i nærheten

@@ -8,7 +8,6 @@
 #include "init.h"
 #include "PID.h"
 #include "buzzAndLed.h"
-#include "speedcontroll.h"
 
 
 
@@ -26,6 +25,14 @@ void loop() {
   readSensors();
   proximitySense();
   battery();
-  setSpeed();
+  
+  if (stopNow){
+        motors.setSpeeds(0, 0);
+  }
+
+  else{
+        MotorSpeeds s = lineFollower(); 
+        motors.setSpeeds(s.left,s.right);
+  }
 
 }

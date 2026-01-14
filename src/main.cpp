@@ -2,12 +2,13 @@
 #include <Zumo32U4.h>
 #include <Wire.h>
 
-#include "EVCharge.h"
+#include "ProxSensors.h"
 #include "sensorRead.h"
 #include "swBatteri.h"
 #include "init.h"
 #include "PID.h"
 #include "buzzAndLed.h"
+#include "speedcontroll.h"
 
 
 
@@ -25,8 +26,6 @@ void loop() {
   readSensors();
   proximitySense();
   battery();
-
-  MotorSpeeds s = lineFollower(); 
-  motors.setSpeeds(s.left,s.right);
+  setSpeed();
 
 }

@@ -10,6 +10,8 @@ Zumo32U4Buzzer buzzer;
 Zumo32U4OLED display;
 Zumo32U4LineSensors lineSensors;
 
+Zumo32U4Motors motors;
+
 
 void initAll(){
 

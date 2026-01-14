@@ -1,7 +1,6 @@
 #include "swBatteri.h"
 #include "buzzAndLed.h"
 #include "init.h"
-#include "EVCharge.h"
 #include "PID.h"
 
 // Batterikapasitet og nåværende ladning
@@ -21,6 +20,7 @@ float testspeed = 100.0;
 // Tidsvariabler for å styre oppdatering
 unsigned long lastBatteryUpdate = 0;
 unsigned long currentTime = 0;
+unsigned long chargeCoolDownValue = 0;
 
 // Lade-moduser
 bool fastCharging = false;
@@ -31,6 +31,8 @@ float speed = 0;
 float prevSpeed = 0;
 
 float acceleration = 0;
+
+bool chargerPresent = false;
 
 // ----------------------------------------------------------
 // PROSENT
@@ -192,7 +194,7 @@ void battery()
     }
 
     // Skriv ut status
-    debugPrint();
+    //debugPrint();
 
 
     // Oppdater prosent og helse

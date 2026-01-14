@@ -4,6 +4,7 @@
 Zumo32U4Buzzer buzzer;
 
 unsigned long lastBuzz = 0;
+unsigned long lastIceCreamBuzz = 0;
 int note = 1;
 
 void batteryBuzz(){
@@ -25,4 +26,16 @@ void batteryBuzz(){
     if (batteryPercent < 10 && prevBatteryPercent >= 10){
         buzzer.playNote(NOTE_A(4), 200, 15);
     }
+}
+
+//Spiller iskrem-musikk
+void iceCreamBuzz(){
+    if (lastIceCreamBuzz+12000 < millis()){
+        buzzer.play("T140 L4 e16f+16g+16a>c+e.g+8a>c+e>d L8 >c+b>c+a>c+b>c+a L1 be8");
+        lastIceCreamBuzz = millis();
+    }
+}
+//Penge kling
+void kaChingBuzz(){
+    buzzer.play(">a16>>e8");
 }

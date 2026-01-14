@@ -10,6 +10,8 @@ extern unsigned long lastBuzz;
 extern int note;
 
 void batteryBuzz();
+void iceCreamBuzz();
+void kaChingBuzz();
 
 
 #endif 

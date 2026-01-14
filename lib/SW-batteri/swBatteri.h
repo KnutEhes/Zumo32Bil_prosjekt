@@ -24,7 +24,7 @@ extern float prevBatteryPercent;
 
 extern float balance;
 
-extern float speed;
+extern float testspeed;
 
 const unsigned long updateInterval = 200;
 extern unsigned long lastBatteryUpdate;

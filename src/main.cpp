@@ -20,8 +20,6 @@ void setup() {
 
 void loop() {
   
-  readSensors();
-  proximitySense();
   battery();
 
 }

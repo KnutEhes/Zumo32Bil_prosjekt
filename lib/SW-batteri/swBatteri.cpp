@@ -16,7 +16,7 @@ float prevBatteryPercent = 100.0;
 float balance = 10000.0;
 
 // Bilens fart (brukes for debugging)
-//float speed = 100.0;
+float testspeed = 100.0;
 
 // Tidsvariabler for å styre oppdatering
 unsigned long lastBatteryUpdate = 0;
@@ -47,12 +47,12 @@ float getBatteryPercent()
 // ----------------------------------------------------------
 float getFastChargingPrice(unsigned long time)
 {
-    return 0.15 * sin(0.0008 * time + 5) + 0.8 + 0.00001 * time; 
+    return 0.15 * sin(0.00013 * time + 5) + 0.8 + 0.00001 * time; 
 }
 
 float getSlowChargingPrice(unsigned long time)
 {
-    return 0.15 * sin(0.001 * time + 13) + 0.5 + 0.00001 * time;
+    return 0.15 * sin(0.0006 * time + 13) + 0.5 + 0.00001 * time;
 }
 
 
@@ -107,7 +107,7 @@ void battery()
     if (fastCharging)
     {
         chargePrice = getFastChargingPrice(currentTime); // hent pris for hurtiglading
-        //speed = 0; // ikke kjør mens du lader (debugging)
+        speed = 0; // ikke kjør mens du lader (debugging)
 
         if (currentTime - lastBatteryUpdate >= updateInterval){
             
@@ -122,7 +122,7 @@ void battery()
                 fastCharging = false;
                 chargerPresent = false;
                 chargeCoolDownValue = currentTime;
-                //speed = 100; // bilen kan kjøre igjen (debugging)
+                speed = 100; // bilen kan kjøre igjen (debugging)
             }
 
             lastBatteryUpdate = currentTime;
@@ -136,7 +136,7 @@ void battery()
     else if (slowCharging)
     {
         chargePrice = getSlowChargingPrice(currentTime); // pris for sakte lading
-        //speed = 0; // ikke kjør mens du lader (debugging)
+        testspeed = 0; // ikke kjør mens du lader (debugging)
 
         if (currentTime - lastBatteryUpdate >= updateInterval){
             
@@ -151,7 +151,7 @@ void battery()
                 slowCharging = false;
                 chargerPresent = false;
                 chargeCoolDownValue = currentTime;
-                //speed = 100; (debugging)
+                testspeed = 100; 
             }
 
             lastBatteryUpdate = currentTime;
@@ -166,22 +166,28 @@ void battery()
     {
         if (currentTime - lastBatteryUpdate >= 100)
         {
+            /*
             MotorSpeeds s = lineFollower();
             speed = (s.left + s.right) / 2.0;
-            acceleration = (speed-prevSpeed)/0.1;
+            */
+            acceleration = (testspeed-prevSpeed)/0.1;
+            
 
             // Tapp batteriet basert på fart
-            currentCharge -= (speedDrainRate*speed + accDrainRate*acceleration) / drainRate; //Midlertidig funksjon for drain
+            currentCharge -= (speedDrainRate*testspeed + accDrainRate*acceleration) / drainRate; //Midlertidig funksjon for drain
 
             if (currentCharge < 0) currentCharge = 0;
 
-            /* Kode for Debugging
-            if (currentCharge == 0) speed = 0;
+            //Kode for Debugging
+            if (currentCharge == 0) testspeed = 0;
 
-            if (currentCharge < 100) fastCharging = true;
-            */
+            if (currentCharge < 100) {
+                slowCharging = true;
+                chargerPresent = true;
+            }
+            
             lastBatteryUpdate = currentTime;
-            prevSpeed = speed;
+            prevSpeed = testspeed;
         }
     }
 

@@ -2,6 +2,10 @@
 #define SWBATTERI_H
 
 #include <Arduino.h>
+#include <Zumo32U4.h>
+#include <Wire.h>
+
+extern Zumo32U4OLED display;
 
 // ----------------------------------------------------------
 // GLOBALE VARIABLER
@@ -28,6 +32,7 @@ extern unsigned long currentTime;
 extern bool fastCharging;
 extern bool slowCharging;
 
+extern int batteryLvl;
 
 // ----------------------------------------------------------
 // FUNKSJONER

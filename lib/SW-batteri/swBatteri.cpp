@@ -1,4 +1,7 @@
 #include "swBatteri.h"
+#include "buzzAndLed.h"
+
+Zumo32U4OLED display;
 #include <EVCharge.h>
 
 // Batterikapasitet og nåværende ladning
@@ -23,6 +26,7 @@ unsigned long currentTime = 0;
 bool fastCharging = false;
 bool slowCharging = false;
 
+int batteryLvl = 0;
 
 // ----------------------------------------------------------
 // PROSENT
@@ -80,6 +84,10 @@ void debugPrint(){
     Serial.print("kr    Battery: ");    Serial.print(getBatteryPercent()); 
     Serial.print("%"); Serial.print("    SlowChargingPrice: "); Serial.print(getSlowChargingPrice(currentTime));
     Serial.print("kr    FastChargingPrice: "); Serial.print(getFastChargingPrice(currentTime)); Serial.println("kr");
+    display.clear();
+    display.print(batteryPercent);
+    display.display();
+    
 }
 
 
@@ -156,7 +164,7 @@ void battery()
         if (currentTime - lastBatteryUpdate >= 100)
         {
             // Tapp batteriet basert på fart
-            currentCharge -= 100 / drainRate; //Midlertidig funksjon for drain
+            currentCharge -= 300 / drainRate; //Midlertidig funksjon for drain
 
             if (currentCharge < 0) currentCharge = 0;
 
@@ -165,7 +173,6 @@ void battery()
 
             if (currentCharge < 100) fastCharging = true;
             */
-
             lastBatteryUpdate = currentTime;
         }
     }
@@ -173,8 +180,10 @@ void battery()
     // Skriv ut status
     debugPrint();
 
+
     // Oppdater prosent og helse
     batteryPercent = getBatteryPercent();
+    batteryBuzz();
     batteryHealth(batteryPercent, prevBatteryPercent);
     prevBatteryPercent = batteryPercent;
 }

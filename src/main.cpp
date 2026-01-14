@@ -18,8 +18,15 @@ void setup() {
 
 }
 
+
+
 void loop() {
-  
+
+  readSensors();
+  proximitySense();
   battery();
+
+  MotorSpeeds s = lineFollower(); 
+  motors.setSpeeds(s.left,s.right);
 
 }

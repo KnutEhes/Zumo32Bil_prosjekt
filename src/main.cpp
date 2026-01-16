@@ -1,18 +1,21 @@
 #include <Arduino.h>
 #include <Zumo32U4.h>
 
-//#include "GPS.h"
-#include "PID.h"
+#include "LinjeSensor.h"
 #include "swBatteri.h"
 #include "EVCharge.h"
 #include "sensorRead.h"
 #include "Cream.h"
 
 #include <Wire.h>
+#include <Skjerm.h>
 
+// Ekstern variabler fra Skjerm
+extern int batteri;
+extern int leftSpeed;
+extern int rightSpeed;
+extern float balance;
 
-Zumo32U4Motors motors;
-Zumo32U4OLED oled;
 
 void setup() {
   // put your setup code here, to run once:
@@ -23,7 +26,11 @@ void setup() {
   initLineSensors();
   delay(20);
   calibrateSensors();
- 
+  //initCompass();
+  //Serial.print(startHeading());
+  
+  // Viser startskjerm og venter på kalibrering
+  startSkjerm();
 }
 
 void loop() {
@@ -37,6 +44,8 @@ void loop() {
   MotorSpeeds s = lineFollower(); 
   motors.setSpeeds(s.left,s.right);
   
+
+  SkjermKjoring();
 
 
 }

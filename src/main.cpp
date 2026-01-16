@@ -23,7 +23,7 @@ void setup() {
   calibrateSensors();
   //initCompass();
   //Serial.print(startHeading());
-  SkjermKalibrering();
+
 }
 
 void loop() {

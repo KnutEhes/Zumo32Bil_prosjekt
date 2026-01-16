@@ -8,8 +8,12 @@
 
 #include <Wire.h>
 #include <Skjerm.h>
-#include "PID.h"
-#include "swBatteri.h"
+
+// Ekstern variabler fra Skjerm
+extern int batteri;
+extern int leftSpeed;
+extern int rightSpeed;
+extern float balance;
 
 
 void setup() {
@@ -23,7 +27,9 @@ void setup() {
   calibrateSensors();
   //initCompass();
   //Serial.print(startHeading());
-
+  
+  // Viser startskjerm og venter på kalibrering
+  startSkjerm();
 }
 
 void loop() {

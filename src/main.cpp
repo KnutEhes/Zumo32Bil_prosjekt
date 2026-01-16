@@ -10,12 +10,8 @@
 #include <Wire.h>
 #include <Skjerm.h>
 
-// Ekstern variabler fra Skjerm
-extern int batteri;
-extern int leftSpeed;
-extern int rightSpeed;
-extern float balance;
-
+Zumo32U4Motors motors;
+Zumo32U4OLED oled;
 
 void setup() {
   // put your setup code here, to run once:
@@ -44,7 +40,6 @@ void loop() {
   MotorSpeeds s = lineFollower(); 
   motors.setSpeeds(s.left,s.right);
   
-
   SkjermKjoring();
 
 

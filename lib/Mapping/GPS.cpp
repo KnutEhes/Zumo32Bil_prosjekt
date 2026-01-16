@@ -1,6 +1,6 @@
 #include <Wire.h>
 #include <Zumo32U4.h>
-#include "PID.h"
+#include "LinjeSensor.h"
 
 Zumo32U4IMU imu;
 char heading = 'N';

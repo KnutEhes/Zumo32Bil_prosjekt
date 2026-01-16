@@ -16,9 +16,12 @@ void hurtigLading(); //Display hurtigLading
 void vanligLading(); //Display vanligLading
 void displayChar(); //Ikke i bruk
 void SkjermLyskryss(); //Display for lysskryss. rød, gul og grønn.
+
 extern int batteri;
 extern int leftSpeed;
 extern int rightSpeed;
+extern float balance;
+
 #endif // Skjerm_h
 
 

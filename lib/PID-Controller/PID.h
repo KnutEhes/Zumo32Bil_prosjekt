@@ -11,8 +11,11 @@ struct MotorSpeeds {
   int16_t right;
 };
 
+
 // These are just declarations (prototypes)
 void initLineSensors();
+void calibrateSensors();
+
 MotorSpeeds lineFollower();
 
 #endif //PID_H

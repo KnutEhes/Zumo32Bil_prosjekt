@@ -14,14 +14,11 @@
 #include "swBatteri.h"
 #include "sensorRead.h"
 
-Zumo32U4OLED display;
-Zumo32U4ButtonA buttonA;
-Zumo32U4ButtonB buttonB;
-Zumo32U4ButtonC buttonC;
 
 int batteri = batteryPercent;
-int leftSpeed = 100;
-int rightSpeed = 100;
+int leftSpeed = leftSpeed;
+int rightSpeed = rightSpeed;
+
 void startSkjerm(){
     display.setLayout21x8();
     display.clear();
@@ -52,6 +49,10 @@ void kjoring(){
     display.print("Batteri: ");
     display.print(batteri);
     display.print("%");
+    display.gotoXY(0, 6);
+    Serial.print(balance);
+    display.print(balance);
+    display.print("kr");
     display.gotoXY(0,2);
     display.print("Left");
     display.gotoXY(0, 3);
@@ -60,6 +61,7 @@ void kjoring(){
     display.print("Right");
     display.gotoXY(15, 3);
     display.print(rightSpeed);
+
 }
 //Lyn-tegn når man lader
 static const char lyn[] PROGMEM = {
@@ -77,6 +79,9 @@ static const char lyn[] PROGMEM = {
 void ladestasjon(){
     display.setLayout21x8();
     display.clear();
+    display.gotoXY(0, 6);
+    display.print(balance);
+    display.print("kr");
     display.gotoXY(0, 0);
     display.print("Velg type lading");
     display.gotoXY(0, 1);
@@ -92,6 +97,9 @@ void ladestasjon(){
         display.gotoXY(0, 1);
         display.print(batteri);
         display.print("%");
+        display.gotoXY(0, 6);
+        display.print(balance);
+        display.print("kr");
         
 }
     void vanligLading(){
@@ -101,7 +109,38 @@ void ladestasjon(){
         display.print("Lader: Vanlig");
         display.gotoXY(0, 1);
         display.print(batteri);
-        display.print("%");      
+        display.print("%"); 
+        display.gotoXY(0, 6);
+        display.print(balance);
+        display.print("kr");     
+}
+void lyskryss(){
+    display.clear();
+    if("lys er rødt"){
+        display.gotoXY(0, 0);
+        display.print("Rødt");
+        display.gotoXY(0, 1);
+        display.print("Stopp!");
+    }
+    else if("lys er gult"){
+        display.gotoXY(0, 0);
+        display.print("Gult");
+        display.gotoXY(0, 1);
+        display.print("Brems!");
+    }
+    else if ("lys er rødt og gult"){
+        display.gotoXY(0, 0);
+        display.print("Rødt og gult");
+        display.gotoXY(0, 1);
+        display.print("Gjør deg klar til å kjøre");
+    }
+    else{
+        display.gotoXY(0, 0);
+        display.print("Grønt");
+        display.gotoXY(0, 1);
+        display.print("Kjør!");
+    }
+    
 }
 
 

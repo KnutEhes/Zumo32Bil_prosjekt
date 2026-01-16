@@ -37,6 +37,10 @@ void loop() {
   kjoring();
   delay(10000);
   ladestasjon();
+  delay(10000);
+  hurtigLading();
+  delay(10000);
+  vanligLading();
 }
   
 

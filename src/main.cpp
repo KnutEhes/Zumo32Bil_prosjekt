@@ -2,6 +2,8 @@
 #include <Zumo32U4.h>
 #include <Wire.h>
 
+
+#include "GPS.h"
 #include "ProxSensors.h"
 #include "sensorRead.h"
 #include "swBatteri.h"
@@ -15,7 +17,7 @@
 void setup() {
   
   initAll();
-
+  
 }
 
 

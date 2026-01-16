@@ -1,60 +1,62 @@
+// PID.cpp  — black line on white background
+#include <Arduino.h>
+#include <Zumo32U4.h>
 #include "PID.h"
 #include "init.h"
 
-// PID constants (tune these for your robot)
-float Kp = 1.0f;
-float Ki = 0.01f;
-float Kd = 0.5f;
 
-// Base motor speed
-const int16_t baseSpeed = 150;
 
-// PID state
+
+// Line sensors live here
+static Zumo32U4LineSensors lineSensors;
+extern Zumo32U4Motors motors;
+
+const uint16_t maxSpeed = 200;
 int16_t lastError = 0;
-long integral = 0;
 
 
-unsigned int sensorValues[5];
+// Sensor buffer (5 sensors)
+static const uint8_t numSensors = 5;
+static uint16_t lineSensorValues[numSensors];
 
 
 
 // Initialize sensors (call from setup() in main file)
 
 
-// Pure line-following function: reads sensors and returns desired speeds
+// Calibrate automatically at startup (call from setup())
+void calibrateSensors() {
+  delay(1000);
+  for(uint16_t i = 0; i < 120; i++)
+  {
+    if (i > 30 && i <= 90)
+    {
+      motors.setSpeeds(-200, 200);
+    }
+    else
+    {
+      motors.setSpeeds(200, -200);
+    }
+
+    lineSensors.calibrate();
+  }
+  motors.setSpeeds(0, 0);
+}
+
+
 MotorSpeeds lineFollower() {
   MotorSpeeds speeds;
+  int16_t position = lineSensors.readLine(lineSensorValues);
+  int16_t error = position - 2000;
 
-  // 1. Read line position (0..4000, ~2000 = center)
-  uint16_t position = lineSensors.readLine(sensorValues);
+  int16_t speedDifference = error / 8 + 1 * (error - lastError);
 
-  // 2. Compute error relative to center
-  int16_t error = (int16_t)position - 2000;
-
-  // 3. PID terms
-  integral += error;
-
-  // Anti-windup on integral
-  if (integral > 10000) integral = 10000;
-  if (integral < -10000) integral = -10000;
-
-  int16_t derivative = error - lastError;
   lastError = error;
 
-  // 4. Compute turn amount
-  float turn = Kp * error + Ki * integral + Kd * derivative;
-  int16_t turn_speed = (int16_t)turn;
+  int16_t leftSpeed = (int16_t)maxSpeed + speedDifference;
+  int16_t rightSpeed = (int16_t)maxSpeed - speedDifference;
 
-  // 5. Compute raw speeds
-  int16_t leftSpeed  = baseSpeed - turn_speed;
-  int16_t rightSpeed = baseSpeed + turn_speed;
-
-  // 6. Constrain to allowed range (-400..400 so it can turn in place)
-  leftSpeed  = constrain(leftSpeed,  -400, 400);
-  rightSpeed = constrain(rightSpeed, -400, 400);
-
-  // 7. Fill struct and return
-  speeds.left  = leftSpeed;
+  speeds.left = leftSpeed;
   speeds.right = rightSpeed;
   return speeds;
 }

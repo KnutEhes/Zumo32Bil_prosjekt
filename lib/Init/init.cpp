@@ -16,8 +16,12 @@ Zumo32U4Motors motors;
 void initAll(){
 
     Serial.begin(9600);
+    Serial.println("hello");
     proxSensor.initFrontSensor();
     display.init();
     lineSensors.initFiveSensors();
+    Serial.begin(9600);
+    delay(20);
+    calibrateSensors();
 
 }

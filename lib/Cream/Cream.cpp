@@ -23,7 +23,6 @@ unsigned long kidCheckWaitTime = 10000;
 
 //Ser etter barn og selger is om det er mange nok i nærheten
 void iceCream(){
-    // LEGG INN IF bilen kjører og leter etter barn spill isbilsangen
 
     /*
     ----------Deteksjon av barn-----------
@@ -32,24 +31,25 @@ void iceCream(){
     childrenNearby = random(0, 10);
     Serial.print("Antall barn: ");
     Serial.println(childrenNearby);
+    lastKidCheck = millis();
     }
 
     //Spiller iskbilmusikk når den leter etter barn
     //TRENGER BEDRE LØSNING
-    if (sellingIceCream == false & (lastIceCreamSold + iceCreamSellTime < millis())){
+    if ((sellingIceCream == false) & (lastIceCreamSold + iceCreamSellTime < millis())){
       iceCreamBuzz();
     }
 
 
     //STARTER Å SELGE IS 
-    if (childrenNearby >= childrenNeeded & (sellingIceCream == false)){
+    if ((childrenNearby >= childrenNeeded) & (sellingIceCream == false)){
         //Stopp bilen her
         sellingIceCream = true;
         Serial.println("Begynner å selge is");
         lastIceCreamSold = millis();
     }
     //SELGER IS
-    if (sellingIceCream = true){
+    if (sellingIceCream == true){
         if (lastIceCreamSold + iceCreamSellTime < millis()){
             //SISTE SALG
             if (childrenNearby < 2){

@@ -12,11 +12,11 @@ void batteryBuzz(){
     if ((batteryPercent) < 5 && (!fastCharging) && (!slowCharging)){
         if ((currentTime - lastBuzz) > 100){
             if (note == 1){
-                buzzer.playNote(NOTE_E(6), 100, 15);
+                //buzzer.playNote(NOTE_E(6), 100, 15);
                 note += 1;
             }
             else if (note == 2){
-                buzzer.playNote(NOTE_G(6), 100, 15);
+                //buzzer.playNote(NOTE_G(6), 100, 15);
                 note -= 1;
             }
             lastBuzz = currentTime;
@@ -31,11 +31,12 @@ void batteryBuzz(){
 //Spiller iskrem-musikk
 void iceCreamBuzz(){
     if (lastIceCreamBuzz+12000 < millis()){
-        buzzer.play("T140 L4 e16f+16g+16a>c+e.g+8a>c+e>d L8 >c+b>c+a>c+b>c+a L1 be8");
+        //buzzer.play("T140 L4 e16f+16g+16a>c+e.g+8a>c+e>d L8 >c+b>c+a>c+b>c+a L1 be8");
+        Serial.println("Spiller musikk");
         lastIceCreamBuzz = millis();
     }
 }
 //Penge kling
 void kaChingBuzz(){
-    buzzer.play(">a16>>e8");
+    //buzzer.play(">a16>>e8");
 }

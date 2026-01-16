@@ -178,7 +178,7 @@ void battery()
     }
 
     // Skriv ut status
-    debugPrint();
+    //debugPrint();
 
 
     // Oppdater prosent og helse

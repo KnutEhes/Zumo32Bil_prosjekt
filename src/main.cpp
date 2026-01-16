@@ -19,24 +19,24 @@ void setup() {
   Serial.begin(9600);
   
   Serial.println("hello");
-  ///initProxSensor();
+  initProxSensor();
   initLineSensors();
   delay(20);
   calibrateSensors();
-  //initCompass();
-  //Serial.print(startHeading());
+ 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   
-  ///readSensors();
-  //proximitySense();
-  //battery();
+  readSensors();
+  proximitySense();
+  battery();
   iceCream();
-  //MotorSpeeds s = lineFollower(); 
-  //motors.setSpeeds(s.left,s.right);
-  //Serial.print(startHeading());
+
+  MotorSpeeds s = lineFollower(); 
+  motors.setSpeeds(s.left,s.right);
+  
 
 
 }

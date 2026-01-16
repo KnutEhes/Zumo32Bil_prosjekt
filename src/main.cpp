@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <Zumo32U4.h>
 
-#include "GPS.h"
 #include "PID.h"
 #include "swBatteri.h"
 #include "EVCharge.h"
@@ -24,6 +23,7 @@ void setup() {
   calibrateSensors();
   //initCompass();
   //Serial.print(startHeading());
+  SkjermKalibrering();
 }
 
 void loop() {
@@ -36,6 +36,8 @@ void loop() {
   MotorSpeeds s = lineFollower(); 
   motors.setSpeeds(s.left,s.right);
   //Serial.print(startHeading());
+
+  SkjermKjoring();
 
 
 }

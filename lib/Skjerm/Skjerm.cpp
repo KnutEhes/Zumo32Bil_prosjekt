@@ -30,18 +30,15 @@ void startSkjerm(){
     display.print("Trykk knapp A");
 }
 //Hva det skal stå etter kalibrering er fullført
-void kalibrering(){
+void SkjermKalibrering(){
     display.setLayout21x8();
     display.clear();
     display.gotoXY(0, 0);
-    display.print("Kalibrering ferdig!");
-    display.gotoXY(0, 1);
-    display.print("Trykk knapp ");
-    display.gotoXY(0, 2);
-    display.print("for start!");
+    display.print("Kalibrerer");
+
 }
 // Viser hastighet og batteri når bilen kjører
-void kjoring(){ 
+void SkjermKjoring(){ 
     display.setLayout21x8();
     //Fart
     display.clear();
@@ -61,22 +58,13 @@ void kjoring(){
     display.print("Right");
     display.gotoXY(15, 3);
     display.print(rightSpeed);
-
+// if(stoppet ved ladestasjon){
+//SkjermLadestasjon();
+//}
 }
-//Lyn-tegn når man lader
-static const char lyn[] PROGMEM = {
-    0b00100,
-    0b01100,
-    0b11100,
-    0b00111,
-    0b00110,
-    0b00100,
-    0b00000,
-    0b00000
-};
 
 //Ladestasjon 
-void ladestasjon(){
+void SkjermLadestasjon(){
     display.setLayout21x8();
     display.clear();
     display.gotoXY(0, 6);
@@ -85,13 +73,20 @@ void ladestasjon(){
     display.gotoXY(0, 0);
     display.print("Velg type lading");
     display.gotoXY(0, 1);
-    display.print("Press B for hurtig");
+    display.print("Press A for hurtig");
     display.gotoXY(0, 2);
-    display.print("Press C for vanlig");
+    display.print("Press B for vanlig");
+
+    if (buttonA.isPressed()){
+        hurtigLading();
+    }
+    if (buttonB.isPressed()){
+        vanligLading();
+    }
 }
     void hurtigLading(){
         display.clear();
-        display.loadCustomCharacter(lyn, 0); //Lagrer lyn i slot 0
+        //display.drawBitmap(20, 10, lightningBitmap, 8, 16, 1);
         display.gotoXY(0, 0);
         display.print("Lader: Hurtig");
         display.gotoXY(0, 1);
@@ -104,7 +99,7 @@ void ladestasjon(){
 }
     void vanligLading(){
         display.clear();
-        display.loadCustomCharacter(lyn, 0); //Lagrer lyn i slot 0
+       // display.drawBitmap(20, 10, lightningBitmap, 8, 16, 1);
         display.gotoXY(0, 0);
         display.print("Lader: Vanlig");
         display.gotoXY(0, 1);
@@ -114,7 +109,7 @@ void ladestasjon(){
         display.print(balance);
         display.print("kr");     
 }
-void lyskryss(){
+void SkjermLyskryss(){
     display.clear();
     if("lys er rødt"){
         display.gotoXY(0, 0);
@@ -142,6 +137,35 @@ void lyskryss(){
     }
     
 }
+//Lyn-tegn når man lader
+static const char lyn[] PROGMEM = {
+    0b00100,
+    0b01100,
+    0b11100,
+    0b00111,
+    0b00110,
+    0b00100,
+    0b00000,
+    0b00000
+};
+const uint8_t lightningBitmap[] = { 
+    0b00000110, 
+    0b00001100, 
+    0b00011000, 
+    0b00110000, 
+    0b01100000, 
+    0b11000000, 
+    0b01100000, 
+    0b00110000, 
+    0b00011000, 
+    0b00001100, 
+    0b00000110, 
+    0b00001100, 
+    0b00011000, 
+    0b00110000, 
+    0b01100000, 
+    0b11000000 
+};
 
 
 

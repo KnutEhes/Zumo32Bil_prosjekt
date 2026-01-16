@@ -22,8 +22,7 @@ void setup() {
   initLineSensors();
   delay(20);
   calibrateSensors();
-  //initCompass();
-  //Serial.print(startHeading());
+ 
 }
 
 void loop() {
@@ -35,7 +34,7 @@ void loop() {
 
   MotorSpeeds s = lineFollower(); 
   motors.setSpeeds(s.left,s.right);
-  //Serial.print(startHeading());
+  
 
 
 }

@@ -41,7 +41,7 @@ void loop() {
 
   MotorSpeeds s = lineFollower(); 
   motors.setSpeeds(s.left,s.right);
-  //Serial.print(startHeading());
+  
 
   SkjermKjoring();
 

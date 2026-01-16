@@ -3,7 +3,6 @@
 #include <Wire.h>
 
 
-#include "GPS.h"
 #include "ProxSensors.h"
 #include "sensorRead.h"
 #include "swBatteri.h"

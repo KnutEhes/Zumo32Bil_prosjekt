@@ -31,3 +31,4 @@ void batteryBuzz(){
         buzzer.playNote(NOTE_A(4), 200, 15);
     }
 }
+

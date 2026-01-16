@@ -8,8 +8,7 @@
 
 
 // Line sensors live here
-static Zumo32U4LineSensors lineSensors;
-extern Zumo32U4Motors motors;
+
 
 const uint16_t maxSpeed = 200;
 int16_t lastError = 0;

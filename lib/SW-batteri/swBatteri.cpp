@@ -2,6 +2,7 @@
 #include "buzzAndLed.h"
 #include "init.h"
 #include "PID.h"
+#include "ProxSensors.h"
 
 // Batterikapasitet og nåværende ladning
 float batteryCapacity = 1000.0;
@@ -26,8 +27,9 @@ unsigned long chargeCoolDownValue = 0;
 bool fastCharging = false;
 bool slowCharging = false;
 
-//(s.left + s.right) / 2.0;
-float speed = 0;
+
+MotorSpeeds s = lineFollower();
+float speed = (s.left + s.right) / 2.0;;
 float prevSpeed = 0;
 
 float acceleration = 0;
@@ -109,7 +111,7 @@ void battery()
     if (fastCharging)
     {
         chargePrice = getFastChargingPrice(currentTime); // hent pris for hurtiglading
-        speed = 0; // ikke kjør mens du lader (debugging)
+        stopNow = true;
 
         if (currentTime - lastBatteryUpdate >= updateInterval){
             
@@ -123,8 +125,8 @@ void battery()
             if (currentCharge >= batteryCapacity || balance == 0 || !chargerPresent){
                 fastCharging = false;
                 chargerPresent = false;
-                chargeCoolDownValue = currentTime;
-                speed = 100; // bilen kan kjøre igjen (debugging)
+                stopNow = false;
+
             }
 
             lastBatteryUpdate = currentTime;
@@ -138,8 +140,8 @@ void battery()
     else if (slowCharging)
     {
         chargePrice = getSlowChargingPrice(currentTime); // pris for sakte lading
-        testspeed = 0; // ikke kjør mens du lader (debugging)
-
+        stopNow = true;
+        
         if (currentTime - lastBatteryUpdate >= updateInterval){
             
             currentCharge += slowChargeRate; // legg til energi
@@ -153,7 +155,8 @@ void battery()
                 slowCharging = false;
                 chargerPresent = false;
                 chargeCoolDownValue = currentTime;
-                testspeed = 100; 
+                stopNow = false;
+
             }
 
             lastBatteryUpdate = currentTime;
@@ -168,15 +171,15 @@ void battery()
     {
         if (currentTime - lastBatteryUpdate >= 100)
         {
-            /*
+            
             MotorSpeeds s = lineFollower();
             speed = (s.left + s.right) / 2.0;
-            */
-            acceleration = (testspeed-prevSpeed)/0.1;
+            
+            acceleration = (speed-prevSpeed)/0.1;
             
 
             // Tapp batteriet basert på fart
-            currentCharge -= (speedDrainRate*testspeed + accDrainRate*acceleration) / drainRate; //Midlertidig funksjon for drain
+            currentCharge -= (speedDrainRate*speed + accDrainRate*acceleration) / drainRate; //Midlertidig funksjon for drain
 
             if (currentCharge < 0) currentCharge = 0;
 
@@ -189,12 +192,12 @@ void battery()
             }
             
             lastBatteryUpdate = currentTime;
-            prevSpeed = testspeed;
+            prevSpeed = speed;
         }
     }
 
     // Skriv ut status
-    //debugPrint();
+    debugPrint();
 
 
     // Oppdater prosent og helse

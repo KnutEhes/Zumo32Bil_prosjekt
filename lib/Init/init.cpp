@@ -1,4 +1,5 @@
 #include <init.h>
+#include "PID.h"
 
 Zumo32U4ProximitySensors proxSensor;
 

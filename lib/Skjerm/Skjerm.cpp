@@ -48,7 +48,7 @@ void SkjermKjoring(){
     display.print(batteri);
     display.print("%");
     display.gotoXY(0, 6);
-    Serial.print(balance);
+    //Serial.print(balance);
     display.print(balance);
     display.print("kr");
     display.gotoXY(0,2);

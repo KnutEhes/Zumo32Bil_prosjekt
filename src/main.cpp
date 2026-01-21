@@ -6,7 +6,7 @@
 #include "sensorRead.h"
 #include "swBatteri.h"
 #include "init.h"
-#include "PID.h"
+#include "LinjeSensor.h"
 #include "buzzAndLed.h"
 #include "Skjerm.h"
 

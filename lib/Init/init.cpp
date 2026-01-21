@@ -1,5 +1,5 @@
 #include <init.h>
-#include "PID.h"
+#include "LinjeSensor.h"
 #include "Skjerm.h"
 
 Zumo32U4ProximitySensors proxSensor;
@@ -22,7 +22,6 @@ void initAll(){
     proxSensor.initFrontSensor();
     display.init();
     lineSensors.initFiveSensors();
-    Serial.begin(9600);
     delay(20);
     calibrateSensors();
     startSkjerm();

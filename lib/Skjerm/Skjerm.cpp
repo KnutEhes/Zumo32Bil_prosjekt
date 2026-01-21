@@ -13,6 +13,7 @@
 #include "Skjerm.h"
 #include "swBatteri.h"
 #include "sensorRead.h"
+#include "init.h"
 
 
 int batteri = batteryPercent;

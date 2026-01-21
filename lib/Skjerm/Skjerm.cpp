@@ -14,11 +14,9 @@
 #include "swBatteri.h"
 #include "sensorRead.h"
 #include "init.h"
+#include "LinjeSensor.h"
 
 
-int batteri = batteryPercent;
-int leftSpeed = leftSpeed;
-int rightSpeed = rightSpeed;
 
 void startSkjerm(){
     display.setLayout21x8();
@@ -38,14 +36,15 @@ void SkjermKalibrering(){
     display.print("Kalibrerer");
 
 }
-// Viser hastighet og batteri når bilen kjører
+// Viser hastighet og batteryPercent når bilen kjører
 void SkjermKjoring(){ 
     display.setLayout21x8();
+    MotorSpeeds screen = lineFollower(); 
     //Fart
     display.clear();
     display.gotoXY(0, 0);
     display.print("Batteri: ");
-    display.print(batteri);
+    display.print(batteryPercent);
     display.print("%");
     display.gotoXY(0, 6);
     Serial.print(balance);
@@ -54,11 +53,11 @@ void SkjermKjoring(){
     display.gotoXY(0,2);
     display.print("Left");
     display.gotoXY(0, 3);
-    display.print(leftSpeed);
+    display.print(screen.left);
     display.gotoXY(15, 2);
     display.print("Right");
     display.gotoXY(15, 3);
-    display.print(rightSpeed);
+    display.print(screen.right);
 // if(stoppet ved ladestasjon){
 //SkjermLadestasjon();
 //}
@@ -91,7 +90,7 @@ void SkjermLadestasjon(){
         display.gotoXY(0, 0);
         display.print("Lader: Hurtig");
         display.gotoXY(0, 1);
-        display.print(batteri);
+        display.print(batteryPercent);
         display.print("%");
         display.gotoXY(0, 6);
         display.print(balance);
@@ -104,7 +103,7 @@ void SkjermLadestasjon(){
         display.gotoXY(0, 0);
         display.print("Lader: Vanlig");
         display.gotoXY(0, 1);
-        display.print(batteri);
+        display.print(batteryPercent);
         display.print("%"); 
         display.gotoXY(0, 6);
         display.print(balance);

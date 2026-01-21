@@ -9,7 +9,7 @@ int16_t lastSpeedDifference = 0;
 uint16_t crossingCount = 0;
 bool robotWasOnCrossing = false; // VIKTIG: For å hindre dobbelttelling
 
-const float Kp = 1.0 / 14.0;
+const float Kp = 1.0 / 25.0;
 const float Kd = 0.8 / 14.0;
 const float filterAlpha = 0.55;
 

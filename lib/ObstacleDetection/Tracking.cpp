@@ -1,14 +1,11 @@
 #include <Wire.h>
 #include <Zumo32U4.h>
+#include "init.h"
 
 // Change next line to this if you are using the older Zumo 32U4
 // with a black and green LCD display:
 // Zumo32U4LCD display;
-Zumo32U4OLED display;
 
-Zumo32U4Motors motors;
-Zumo32U4ProximitySensors proxSensors;
-Zumo32U4ButtonA buttonA;
 
 // A sensors reading must be greater than or equal to this
 // threshold in order for the program to consider that sensor as

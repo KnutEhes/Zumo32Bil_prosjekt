@@ -12,7 +12,6 @@ extern Zumo32U4ButtonB buttonB;
 extern Zumo32U4ButtonC buttonC;
 
 void readSensors(void);
-void initProxSensor(void);
 
 extern int rightProxSensorValue;
 extern int leftProxSensorValue;

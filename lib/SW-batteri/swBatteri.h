@@ -5,7 +5,6 @@
 #include <Zumo32U4.h>
 #include <Wire.h>
 
-extern Zumo32U4OLED display;
 
 // ----------------------------------------------------------
 // GLOBALE VARIABLER
@@ -18,12 +17,15 @@ const float fastChargeRate = 10.0;
 const float slowChargeRate = 3.0;
 const float drainRate = 30.0;
 
+const float speedDrainRate = 0.2;
+const float accDrainRate = 0.2;
+
 extern float batteryPercent;
 extern float prevBatteryPercent;
 
 extern float balance;
 
-extern float speed;
+extern float testspeed;
 
 const unsigned long updateInterval = 200;
 extern unsigned long lastBatteryUpdate;

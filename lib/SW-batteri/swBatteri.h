@@ -16,8 +16,9 @@ extern float currentCharge;
 const float fastChargeRate = 10.0;
 const float slowChargeRate = 3.0;
 const float drainRate = 30.0;
-const float speedDrainRate = 1.0;
-const float accDrainRate = 1.0;
+
+const float speedDrainRate = 0.2;
+const float accDrainRate = 0.2;
 
 extern float batteryPercent;
 extern float prevBatteryPercent;

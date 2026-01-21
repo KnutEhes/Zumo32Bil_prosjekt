@@ -15,9 +15,6 @@ float prevBatteryPercent = 100.0;
 // Hvor mye penger bilen har
 float balance = 10000.0;
 
-// Bilens fart (brukes for debugging)
-float testspeed = 100.0;
-
 // Tidsvariabler for å styre oppdatering
 unsigned long lastBatteryUpdate = 0;
 unsigned long currentTime = 0;
@@ -184,7 +181,6 @@ void battery()
             if (currentCharge < 0) currentCharge = 0;
 
             //Kode for Debugging
-            if (currentCharge == 0) testspeed = 0;
 
             if (currentCharge < 100) {
                 slowCharging = true;

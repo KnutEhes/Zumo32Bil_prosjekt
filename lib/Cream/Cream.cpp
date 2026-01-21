@@ -1,6 +1,7 @@
 #include <Cream.h>
 #include <buzzAndLed.h>
 #include <swBatteri.h>
+#include <ProxSensors.h>
 
 //barn i nærheten
 int childrenNearby = 0;
@@ -43,19 +44,19 @@ void iceCream(){
 
     //STARTER Å SELGE IS 
     if ((childrenNearby >= childrenNeeded) & (sellingIceCream == false)){
-        //Stopp bilen her
         sellingIceCream = true;
         Serial.println("Begynner å selge is");
         lastIceCreamSold = millis();
     }
     //SELGER IS
     if (sellingIceCream == true){
+        stopNow = true; //stopper bilen
         if (lastIceCreamSold + iceCreamSellTime < millis()){
             //SISTE SALG
             if (childrenNearby < 2){
                 childrenNearby = 0;
                 sellingIceCream = false;
-                //start bilen igjen her
+                stopNow = false;    //starter bilen igjen
             }
             else{
                 childrenNearby -= 1;

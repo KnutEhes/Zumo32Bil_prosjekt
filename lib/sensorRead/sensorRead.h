@@ -6,6 +6,11 @@
 #include <Zumo32U4.h>
 #include <Arduino.h>
 
+
+extern Zumo32U4ButtonA buttonA;
+extern Zumo32U4ButtonB buttonB;
+extern Zumo32U4ButtonC buttonC;
+
 void readSensors(void);
 
 extern int rightProxSensorValue;

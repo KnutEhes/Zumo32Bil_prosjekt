@@ -8,6 +8,7 @@
 #include "init.h"
 #include "PID.h"
 #include "buzzAndLed.h"
+#include "Skjerm.h"
 
 
 
@@ -24,6 +25,8 @@ void loop() {
   readSensors();
   proximitySense();
   battery();
+  SkjermKjoring();
+
   
   if (stopNow){
         motors.setSpeeds(0, 0);

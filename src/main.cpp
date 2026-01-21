@@ -26,11 +26,7 @@ void loop() {
   readSensors();
   proximitySense();
   battery();
-  iceCream();
-
-  MotorSpeeds s = lineFollower(); 
-  motors.setSpeeds(s.left,s.right);
-  
+  iceCream();  
   SkjermKjoring();
 
   

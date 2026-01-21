@@ -1,13 +1,12 @@
 // PID.cpp  — black line on white background
 #include <Arduino.h>
 #include <Zumo32U4.h>
-#include "LinjeSensor.h"
+#include "PID.h"
 
 
 
 // Line sensors live here
-static Zumo32U4LineSensors lineSensors;
-extern Zumo32U4Motors motors;
+#include "init.h"
 
 const uint16_t maxSpeed = 200;
 int16_t lastError = 0;
@@ -136,4 +135,26 @@ MotorSpeeds lineFollower() {
   speeds.left = leftSpeed;
   speeds.right = rightSpeed;
   return speeds;
+}
+
+//Get line sensor data with cross detection
+LinjesensorData getLineSensorData() {
+  LinjesensorData data;
+  int16_t position = lineSensors.readLine(lineSensorValues);
+  
+  // Copy sensor values to struct
+  for(uint8_t i = 0; i < 5; i++) {
+    data.sensorVerdi[i] = lineSensorValues[i];
+  }
+
+
+
+  
+  // Detect crossing - if all sensors see black line or center sensors are saturated
+  bool allSensors = (lineSensorValues[0] > 500 && lineSensorValues[1] > 500 && 
+                     lineSensorValues[2] > 500 && lineSensorValues[3] > 500 && 
+                     lineSensorValues[4] > 500);
+  data.kryss = allSensors;
+  
+  return data;
 }

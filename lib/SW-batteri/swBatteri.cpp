@@ -1,7 +1,7 @@
 #include "swBatteri.h"
 #include "buzzAndLed.h"
 #include "init.h"
-#include "PID.h"
+#include "LinjeSensor.h"
 #include "ProxSensors.h"
 
 // Batterikapasitet og nåværende ladning

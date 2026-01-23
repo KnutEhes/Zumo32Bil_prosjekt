@@ -10,6 +10,8 @@ extern bool objectDetected;
 extern bool stopNow;
 extern unsigned long detected;
 
+const int limit = 5;
+
 void proximitySense();
 
 #endif

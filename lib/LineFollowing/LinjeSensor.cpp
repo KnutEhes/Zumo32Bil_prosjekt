@@ -12,7 +12,7 @@ uint16_t crossingCount = 0;
 // VERDIER FOR SMOOTH KJØRING:
 const float Kp = 1.1 / 14.0;    // Litt ned fra 1.2 for å unngå nervøs styring
 const float Kd = 3.5 / 14.0;    // Økt betydelig (fra 2.0) for å fjerne all risting
-const float filterAlpha = 0.35; // Senket fra 0.7 for mye mykere overganger (viktig!)
+const float filterAlpha = 0.6; // Senket fra 0.7 for mye mykere overganger (viktig!)
 
 const uint8_t numSensors = 5;
 uint16_t lineSensorValues[numSensors];

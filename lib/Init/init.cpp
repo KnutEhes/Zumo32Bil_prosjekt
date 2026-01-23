@@ -21,10 +21,10 @@ void initAll(){
     Serial.println("hello");
     proxSensor.initFrontSensor();
     display.init();
-    lineSensors.initFiveSensors();
+    SkjermKalibrering();
+    initLineSensors();
     delay(20);
     calibrateSensors();
-    startSkjerm();
 
 
 }

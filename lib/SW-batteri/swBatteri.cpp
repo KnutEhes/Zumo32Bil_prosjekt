@@ -151,7 +151,6 @@ void battery()
             if (currentCharge >= batteryCapacity || balance == 0 || !chargerPresent){
                 slowCharging = false;
                 chargerPresent = false;
-                chargeCoolDownValue = currentTime;
                 stopNow = false;
 
             }

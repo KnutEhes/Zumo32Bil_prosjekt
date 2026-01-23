@@ -33,7 +33,7 @@ void loop() {
   iceCream();  
   setSpeeds();
 
-  if ((timeNow - screenUpdate) > 400){
+  if ((timeNow - screenUpdate) > 300){
     SkjermKjoring();
     screenUpdate = timeNow;
   }

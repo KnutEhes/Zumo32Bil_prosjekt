@@ -1,6 +1,6 @@
-// PID.h
-#ifndef PID_H
-#define PID_H
+// LinjeSensor.h
+#ifndef LINJESENSOR_H
+#define LINJESENSOR_H
 
 #include <Arduino.h> // VIKTIG: Gir tilgang til int16_t, uint8_t, osv.
 
@@ -25,4 +25,4 @@ void calibrateSensors();
 LinjesensorData getLineSensorData();
 MotorSpeeds lineFollower();
 
-#endif // PID_H
+#endif // LINJESENSOR_H

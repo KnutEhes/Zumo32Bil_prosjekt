@@ -1,29 +1,28 @@
-//
-// Created by knuth on 14.11.2025.
-//
-
+// PID.h
 #ifndef PID_H
 #define PID_H
 
-// Struct for returning both motor speeds
+#include <Arduino.h> // VIKTIG: Gir tilgang til int16_t, uint8_t, osv.
+
+// Struct for å returnere hastighet til begge motorer samtidig
 struct MotorSpeeds {
   int16_t left;
   int16_t right;
 };
 
-struct LinjesensorData{
-  int16_t sensorVerdi[5];
+// Struct for alle sensordata samlet
+struct LinjesensorData {
+  uint16_t sensorVerdi[5];    // Endret til uint16_t (standard for Zumo-sensorer)
   bool kryss;
-  int16_t kryss_posisjon;      // Position of crossing (-2000 to 2000, 0 = center)
-  uint16_t kryss_count;        // Number of crossings detected
-  uint8_t grener;              // Number of branches detected (2-4)
+  int16_t kryss_posisjon;     // Posisjon i krysset (-2000 til 2000)
+  uint16_t kryss_count;       // Totalt antall kryss detektert
+  uint8_t grener;             // Antall grener (2, 3 eller 4)
 };
 
-// These are just declarations (prototypes)
+// Funksjonsprototyper
 void initLineSensors();
 void calibrateSensors();
-
 LinjesensorData getLineSensorData();
 MotorSpeeds lineFollower();
 
-#endif //PID_H
+#endif // PID_H

@@ -6,23 +6,22 @@
 
 bool objectDetected = false;
 bool stopNow = false;
-
 unsigned long detected = 0;
 
 
 void proximitySense(){
-    if ((rightProxSensorValue > 4 || leftProxSensorValue > 4) & !objectDetected){    
+    if ((rightProxSensorValue > limit || leftProxSensorValue > limit) & !objectDetected){    
         objectDetected = true;
         detected = millis();
     }
-    if (((detected - millis()) > 50) & (rightProxSensorValue > 4 || leftProxSensorValue > 4) & objectDetected){
+    if (((detected - millis()) > 50) & (rightProxSensorValue > limit || leftProxSensorValue > limit) & objectDetected){
         stopNow = true;
     }
-    if ((rightProxSensorValue < 4 || leftProxSensorValue < 4) & objectDetected){    
+    if ((rightProxSensorValue < limit || leftProxSensorValue < limit) & objectDetected){    
         objectDetected = false;
         detected = millis();
     }
-    if (((detected - millis()) > 50) & (rightProxSensorValue < 4 || leftProxSensorValue < 4) & !objectDetected){
+    if (((detected - millis()) > 50) & (rightProxSensorValue < limit || leftProxSensorValue < limit) & !objectDetected){
         stopNow = false;
     }
 /*

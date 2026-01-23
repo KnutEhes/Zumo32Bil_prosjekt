@@ -3,6 +3,7 @@
 #include "init.h"
 #include "LinjeSensor.h"
 #include "ProxSensors.h"
+#include "motor.h"
 
 // Batterikapasitet og nåværende ladning
 float batteryCapacity = 1000.0;
@@ -25,8 +26,7 @@ bool fastCharging = false;
 bool slowCharging = false;
 
 
-MotorSpeeds s = lineFollower();
-float speed = (s.left + s.right) / 2.0;;
+float speed = (leftSpeed + rightSpeed) / 2.0;;
 float prevSpeed = 0;
 
 float acceleration = 0;
@@ -169,8 +169,7 @@ void battery()
         if (currentTime - lastBatteryUpdate >= 100)
         {
             
-            MotorSpeeds s = lineFollower();
-            speed = (s.left + s.right) / 2.0;
+            speed = (leftSpeed + rightSpeed) / 2.0;
             
             acceleration = (speed-prevSpeed)/0.1;
             

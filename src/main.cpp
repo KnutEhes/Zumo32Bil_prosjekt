@@ -10,7 +10,10 @@
 #include "buzzAndLed.h"
 #include "Skjerm.h"
 #include "Cream.h"
+#include "motor.h"
 
+unsigned long screenUpdate = 0;
+unsigned long timeNow = 0;
 
 
 void setup() {
@@ -22,25 +25,20 @@ void setup() {
 
 
 void loop() {
+  timeNow = millis();
 
   readSensors();
   proximitySense();
   battery();
-  iceCream();
+  iceCream();  
+  setSpeeds();
 
-  MotorSpeeds s = lineFollower(); 
-  motors.setSpeeds(s.left,s.right);
-  
-  SkjermKjoring();
-
-  
-  if (stopNow){
-        motors.setSpeeds(0, 0);
+  if ((timeNow - screenUpdate) > 400){
+    SkjermKjoring();
+    screenUpdate = timeNow;
   }
 
-  else{
-        MotorSpeeds s = lineFollower(); 
-        motors.setSpeeds(s.left,s.right);
-  }
+  
+
 
 }

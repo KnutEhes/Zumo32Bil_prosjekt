@@ -1,6 +1,7 @@
 #include <init.h>
 #include "LinjeSensor.h"
 #include "Skjerm.h"
+#include "Cream.h"
 
 Zumo32U4ProximitySensors proxSensor;
 
@@ -25,6 +26,7 @@ void initAll(){
     initLineSensors();
     delay(20);
     calibrateSensors();
+    creamSetup();
 
 
 }

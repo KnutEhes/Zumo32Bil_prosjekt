@@ -11,6 +11,8 @@ extern int note;
 void batteryBuzz();
 void iceCreamBuzz();
 void kaChingBuzz();
+void sexyBuzz();
+void sonicBuzz();
 
 
 #endif 

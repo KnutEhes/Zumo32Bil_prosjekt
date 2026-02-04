@@ -23,17 +23,8 @@ unsigned long newPosTime = 0;
 int currentPos[2]{0, 0};
 
 //Matrise som viser antall barn i de forskjellig gatene
-int kidMatrix[7][4]{
-    /*
-    {0, 0, 0, 0}, 
-    {0, 0, 0, 0}, 
-    {0, 0, 0, 0}, 
-    {0, 0, 0, 0}, 
-    {0, 0, 0, 0}, 
-    {0, 0, 0, 0}, 
-    {0, 0, 0, 0}, 
-    */
-};
+int kidMatrix[7][4];
+
 void creamSetup(){
                 for (int i=0; i<7; i++){
                     for (int j=0; j<4; j++){

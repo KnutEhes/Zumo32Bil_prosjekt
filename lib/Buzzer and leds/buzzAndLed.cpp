@@ -62,7 +62,7 @@ void sexyBuzz(){
 }
 
 void sonicBuzz(){
-    if lastSonicBuzz+12000 < millis(){
+    if (lastSonicBuzz+12000 < millis){
         buzzer.play(
         "!T152 L16 O5 V15"
         "A F A F B G B G"

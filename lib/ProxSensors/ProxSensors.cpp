@@ -28,12 +28,12 @@ void proximitySense(){
     if (((detected - millis()) > 50) & (rightProxSensorValue < limit || leftProxSensorValue < limit) & !objectDetected){
         stopNow = false;
     }
-
+/*
     Serial.print(objectDetected);
     Serial.print(stopNow);
     Serial.print(rightProxSensorValue);
     Serial.println(leftProxSensorValue);
 
-
+*/
 
 }

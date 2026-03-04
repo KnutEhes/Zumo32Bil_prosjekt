@@ -5,4 +5,5 @@
 #include <Arduino.h>
 
 void iceCream(void);
+void creamSetup(void);
 

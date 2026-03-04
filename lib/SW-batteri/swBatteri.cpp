@@ -109,6 +109,7 @@ void battery()
     {
         chargePrice = getFastChargingPrice(currentTime); // hent pris for hurtiglading
         stopNow = true;
+        sonicBuzz();
 
         if (currentTime - lastBatteryUpdate >= updateInterval){
             
@@ -138,6 +139,7 @@ void battery()
     {
         chargePrice = getSlowChargingPrice(currentTime); // pris for sakte lading
         stopNow = true;
+        sexyBuzz();
         
         if (currentTime - lastBatteryUpdate >= updateInterval){
             

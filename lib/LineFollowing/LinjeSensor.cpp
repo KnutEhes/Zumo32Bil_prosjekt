@@ -14,9 +14,9 @@ int16_t lastSpeedDifference = 0;
 uint16_t crossingCount = 0;    // Track total crossings detected
 
 // PID gains - tuned for smooth turning with sharp turn capability
-const float Kp = 1.1 / 14.0;  // Proportional gain - balanced for sharp turns and stability
-const float Kd = 3.5 / 14.0;  // Derivative gain - increased for better damping
-const float filterAlpha = 0.6; // Low-pass filter - higher for smoother transitions
+const float Kp = 1.0 / 14.0;  // Proportional gain - balanced for sharp turns and stability
+const float Kd = 0.8 / 14.0;  // Derivative gain - increased for better damping
+const float filterAlpha = 0.55; // Low-pass filter - higher for smoother transitions
 
 // Sensor buffer (5 sensors)
 const uint8_t numSensors = 5;

@@ -1,5 +1,5 @@
-#ifndef PROXSENSORS_H
-#define PROXSENSORS_H
+#pragma once
+
 
 #include <Zumo32U4.h>
 #include <Arduino.h>
@@ -10,8 +10,10 @@ extern bool objectDetected;
 extern bool stopNow;
 extern unsigned long detected;
 
+extern int leftProxSensorValue;
+extern int rightProxSensorValue;
+
 const int limit = 5;
 
 void proximitySense();
 
-#endif

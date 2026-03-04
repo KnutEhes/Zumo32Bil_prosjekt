@@ -1,5 +1,5 @@
-#ifndef BUZZANDLED_H
-#define BUZZANDLED_H
+#pragma once
+
 
 #include <Arduino.h>
 #include <Zumo32U4.h>
@@ -13,4 +13,3 @@ void iceCreamBuzz();
 void kaChingBuzz();
 
 
-#endif 

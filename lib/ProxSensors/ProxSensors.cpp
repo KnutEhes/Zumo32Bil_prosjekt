@@ -1,5 +1,4 @@
 #include "ProxSensors.h"
-#include "sensorRead.h"
 #include "swBatteri.h"
 #include "init.h"
 
@@ -7,9 +6,14 @@
 bool objectDetected = false;
 bool stopNow = false;
 unsigned long detected = 0;
+int leftProxSensorValue = 0;
+int rightProxSensorValue = 0;
 
 
 void proximitySense(){
+    leftProxSensorValue = proxSensor.countsFrontWithLeftLeds();
+    rightProxSensorValue = proxSensor.countsFrontWithRightLeds();
+
     if ((rightProxSensorValue > limit || leftProxSensorValue > limit) & !objectDetected){    
         objectDetected = true;
         detected = millis();
@@ -33,20 +37,3 @@ void proximitySense(){
 
 
 }
-
-
-/*
-
-if (buttonAValue){   //hurtiglading
-            fastCharging = true;
-        }
-        if (buttonBValue){   //sakte lading
-            slowCharging = true;
-        }
-        if (buttonCValue){   //avbrytlading
-            chargerPresent = false;
-        }
-    }
-    
-
-*/

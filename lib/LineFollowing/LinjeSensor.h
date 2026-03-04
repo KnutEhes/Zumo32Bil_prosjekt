@@ -1,7 +1,5 @@
 // LinjeSensor.h
-#ifndef LINJESENSOR_H
-#define LINJESENSOR_H
-
+#pragma once
 #include <Arduino.h> // VIKTIG: Gir tilgang til int16_t, uint8_t, osv.
 
 // Struct for å returnere hastighet til begge motorer samtidig
@@ -25,4 +23,3 @@ void calibrateSensors();
 LinjesensorData getLineSensorData();
 MotorSpeeds lineFollower();
 
-#endif // LINJESENSOR_H

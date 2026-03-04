@@ -5,6 +5,10 @@
 #include "ProxSensors.h"
 #include "motor.h"
 
+// External motor speeds
+extern int leftSpeed;
+extern int rightSpeed;
+
 // Batterikapasitet og nåværende ladning
 float batteryCapacity = 1000.0;
 float currentCharge = 1000.0;
@@ -26,12 +30,13 @@ bool fastCharging = false;
 bool slowCharging = false;
 
 
-float speed = (leftSpeed + rightSpeed) / 2.0;;
-float prevSpeed = 0;
 
-float acceleration = 0;
 
 bool chargerPresent = false;
+
+float speed = 0;
+float prevSpeed = 0;
+float acceleration = 0;
 
 // ----------------------------------------------------------
 // PROSENT
@@ -169,7 +174,6 @@ void battery()
     {
         if (currentTime - lastBatteryUpdate >= 100)
         {
-            
             speed = (leftSpeed + rightSpeed) / 2.0;
             
             acceleration = (speed-prevSpeed)/0.1;

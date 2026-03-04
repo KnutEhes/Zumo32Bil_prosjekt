@@ -14,18 +14,18 @@ void proximitySense(){
     leftProxSensorValue = proxSensor.countsFrontWithLeftLeds();
     rightProxSensorValue = proxSensor.countsFrontWithRightLeds();
 
-    if ((rightProxSensorValue > limit || leftProxSensorValue > limit) & !objectDetected){    
+    if ((rightProxSensorValue > limit || leftProxSensorValue > limit) && !objectDetected){    
         objectDetected = true;
         detected = millis();
     }
-    if (((detected - millis()) > 50) & (rightProxSensorValue > limit || leftProxSensorValue > limit) & objectDetected){
+    if (((millis() - detected) > 50) && (rightProxSensorValue > limit || leftProxSensorValue > limit) && objectDetected){
         stopNow = true;
     }
-    if ((rightProxSensorValue < limit || leftProxSensorValue < limit) & objectDetected){    
+    if ((rightProxSensorValue < limit || leftProxSensorValue < limit) && objectDetected){    
         objectDetected = false;
         detected = millis();
     }
-    if (((detected - millis()) > 50) & (rightProxSensorValue < limit || leftProxSensorValue < limit) & !objectDetected){
+    if (((millis() - detected) > 50) && (rightProxSensorValue < limit || leftProxSensorValue < limit) && !objectDetected){
         stopNow = false;
     }
 /*

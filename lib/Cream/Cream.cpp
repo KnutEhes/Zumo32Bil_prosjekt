@@ -37,10 +37,10 @@ void creamSetup(){
 
 //Ser etter barn og selger is om det er mange nok i nærheten
 void iceCream(){
-    if(!fastCharging & !slowCharging){
+    if(!fastCharging && !slowCharging){
 
         //Midlertidig kode som genererer ny posisjon med antall barn
-        if ((sellingIceCream == false) & (millis() > newPosTime+5000)){
+        if ((sellingIceCream == false) && (millis() > newPosTime+5000)){
             currentPos[0] = random(0, 6);
             currentPos[1] = random(0, 3);
             for (int i=0; i<7; i++){
@@ -67,10 +67,10 @@ void iceCream(){
             for (int i=0; i<7; i++){
                 for (int j=0; j<4; j++){
                     int terning = random(0, 1000);
-                    if ((terning < 3) & (kidMatrix[i][j] < 9)){
+                    if ((terning < 3) && (kidMatrix[i][j] < 9)){
                         kidMatrix[i][j] +=1;
                     }
-                    if ((terning > 998) & (kidMatrix[i][j] > 0)){
+                    if ((terning > 998) && (kidMatrix[i][j] > 0)){
                         kidMatrix[i][j] -=1;
                     }
 
@@ -82,13 +82,13 @@ void iceCream(){
 
         //Spiller isbilmusikk når den leter etter barn
         //TRENGER BEDRE LØSNING
-        if ((sellingIceCream == false) & (lastIceCreamSold + iceCreamSellTime < millis())){
+        if ((sellingIceCream == false) && (lastIceCreamSold + iceCreamSellTime < millis())){
         //iceCreamBuzz();
         }
 
 
         //STARTER Å SELGE IS 
-        if ((kidMatrix[currentPos[0]][currentPos[1]] >= childrenNeeded) & (sellingIceCream == false)){
+        if ((kidMatrix[currentPos[0]][currentPos[1]] >= childrenNeeded) && (sellingIceCream == false)){
             sellingIceCream = true;
             Serial.print("Begynner å selge is for følgende antall barn: ");
             Serial.println(kidMatrix[currentPos[0]][currentPos[1]]);

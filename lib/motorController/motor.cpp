@@ -18,6 +18,6 @@ void setSpeeds(){
             leftSpeed = s.left;
     }
 
-    motors.setSpeeds(rightSpeed, leftSpeed);
+    motors.setSpeeds(leftSpeed, rightSpeed);
 
 }

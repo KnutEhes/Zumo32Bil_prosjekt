@@ -19,8 +19,7 @@ void setup() {
 
 
 void loop() {
-
-  proximitySense();
+  
   battery();
   iceCream();  
   setSpeeds();

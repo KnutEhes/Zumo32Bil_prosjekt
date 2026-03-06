@@ -6,17 +6,11 @@
 int leftSpeed = 0;
 int rightSpeed = 0;
 
+
 void setSpeeds(){
-    
-    if (stopNow){
-        rightSpeed = leftSpeed = 0;
-    }
-    
-    else{
-            MotorSpeeds s = lineFollower();
-            rightSpeed = s.right;
-            leftSpeed = s.left;
-    }
+    MotorSpeeds s = lineFollower();
+    rightSpeed = s.right;
+    leftSpeed = s.left;
 
     motors.setSpeeds(leftSpeed, rightSpeed);
 

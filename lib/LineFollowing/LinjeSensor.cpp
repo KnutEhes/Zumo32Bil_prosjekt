@@ -8,19 +8,47 @@
 // Line sensors live here
 
 
-const uint16_t maxSpeed = 200;
+const uint16_t maxSpeed = 150;
 int16_t lastError = 0;
 int16_t lastSpeedDifference = 0;
 uint16_t crossingCount = 0;    // Track total crossings detected
 
-// PID gains - tuned for smooth turning with sharp turn capability
-const float Kp = 1.0 / 14.0;  // Proportional gain - balanced for sharp turns and stability
-const float Kd = 0.8 / 14.0;  // Derivative gain - increased for better damping
-const float filterAlpha = 0.55; // Low-pass filter - higher for smoother transitions
+// PID gains - justert for roligere styring
+const float Kp = 1.1 / 14.0;
+const float Kd = 0.6 / 14.0;
+const float filterAlpha = 0.6; // Litt mer demping
 
 // Sensor buffer (5 sensors)
 const uint8_t numSensors = 5;
 uint16_t lineSensorValues[numSensors];
+
+const uint16_t intersectionThreshold = 600;
+const uint16_t centeredThreshold = 650;
+bool atIntersectionNow = false;
+bool intersectionLatched = false;
+bool intersectionEvent = false;
+
+static int16_t updateLineState() {
+  int16_t position = lineSensors.readLine(lineSensorValues);
+
+  uint8_t activeCount = 0;
+  for (uint8_t i = 0; i < numSensors; i++) {
+    if (lineSensorValues[i] > intersectionThreshold) {
+      activeCount++;
+    }
+  }
+
+  atIntersectionNow = (activeCount >= 4) ||
+                      (lineSensorValues[0] > intersectionThreshold && lineSensorValues[4] > intersectionThreshold);
+
+  if (atIntersectionNow && !intersectionLatched) {
+    crossingCount++;
+    intersectionEvent = true;
+  }
+  intersectionLatched = atIntersectionNow;
+
+  return position;
+}
 
 
 
@@ -49,76 +77,24 @@ void calibrateSensors() {
 }
 
 
-// Get line sensor data with cross detection
-LinjesensorData getLineSensorData() {
-  LinjesensorData data;
-  int16_t position = lineSensors.readLine(lineSensorValues);
-  
-  // Copy sensor values to struct
-  for(uint8_t i = 0; i < 5; i++) {
-    data.sensorVerdi[i] = lineSensorValues[i];
-  }
-  
-  // Threshold for detecting black line
-  const uint16_t threshold = 500;
-  
-  // Count how many sensors see black
-  uint8_t sensorCount = 0;
-  bool left = lineSensorValues[0] > threshold;    // Index 0
-  bool center_left = lineSensorValues[1] > threshold;  // Index 1
-  bool center = lineSensorValues[2] > threshold;  // Index 2 (center)
-  bool center_right = lineSensorValues[3] > threshold; // Index 3
-  bool right = lineSensorValues[4] > threshold;   // Index 4
-  
-  if (left) sensorCount++;
-  if (center_left) sensorCount++;
-  if (center) sensorCount++;
-  if (center_right) sensorCount++;
-  if (right) sensorCount++;
-  
-  // Detect crossing pattern
-  if (sensorCount >= 3) {  // At least 3 sensors see black = crossing
-    data.kryss = true;
-    data.kryss_posisjon = position;
-    
-    // Determine number of branches
-    if (center && left && right) {
-      // All three outer sensors = 4-way crossing (+ form)
-      data.grener = 4;
-    } else if ((center && left && center_right) || (center && center_left && right)) {
-      // T-junction: center + left+center_left OR center + right+center_right = 3 branches
-      data.grener = 3;
-    } else {
-      // Default: 2-way
-      data.grener = 2;
-    }
-    
-    crossingCount++;
-    data.kryss_count = crossingCount;
-  } else {
-    data.kryss = false;
-    data.kryss_posisjon = 0;
-    data.grener = 0;
-    data.kryss_count = crossingCount;
-  }
-  
-  return data;
-}
+
 
 MotorSpeeds lineFollower() {
   MotorSpeeds speeds;
-  int16_t position = lineSensors.readLine(lineSensorValues);
+  int16_t position = updateLineState();
   int16_t error = position - 2000;
+
+  // Failsafe fjernet: PID brukes alltid, også hvis alle sensorer ser hvitt
 
   // PID calculation with separate P and D terms
   int16_t speedDifference = (int16_t)(Kp * error + Kd * (error - lastError));
-  
+
   // Low-pass filter for smooth transitions
   speedDifference = (int16_t)(filterAlpha * speedDifference + (1 - filterAlpha) * lastSpeedDifference);
-  
+
   // Limit speed difference to allow sharp turns but prevent extremes
-  if (speedDifference > 150) speedDifference = 150;
-  if (speedDifference < -150) speedDifference = -150;
+  if (speedDifference > 120) speedDifference = 120;
+  if (speedDifference < -120) speedDifference = -120;
 
   lastError = error;
   lastSpeedDifference = speedDifference;
@@ -127,12 +103,37 @@ MotorSpeeds lineFollower() {
   int16_t rightSpeed = (int16_t)maxSpeed - speedDifference;
 
   // Clamp speeds to valid range
-  if (leftSpeed > 400) leftSpeed = 400;
-  if (leftSpeed < -400) leftSpeed = -400;
-  if (rightSpeed > 400) rightSpeed = 400;
-  if (rightSpeed < -400) rightSpeed = -400;
+  if (leftSpeed > 300) leftSpeed = 300;
+  if (leftSpeed < -300) leftSpeed = -300;
+  if (rightSpeed > 300) rightSpeed = 300;
+  if (rightSpeed < -300) rightSpeed = -300;
 
   speeds.left = leftSpeed;
   speeds.right = rightSpeed;
   return speeds;
 }
+
+bool isAtIntersection() {
+  updateLineState();
+  return atIntersectionNow;
+}
+
+bool consumeIntersectionEvent() {
+  updateLineState();
+  bool hadEvent = intersectionEvent;
+  intersectionEvent = false;
+  return hadEvent;
+}
+
+bool isCenteredOnLine() {
+  updateLineState();
+
+  bool centerActive = lineSensorValues[2] > centeredThreshold;
+  bool leftOuterActive = lineSensorValues[0] > intersectionThreshold;
+  bool rightOuterActive = lineSensorValues[4] > intersectionThreshold;
+
+  // Sentrert på en enkel linje: midtsensor ser tydelig linje, og vi står ikke i kryss.
+  return centerActive && !leftOuterActive && !rightOuterActive && !atIntersectionNow;
+}
+
+

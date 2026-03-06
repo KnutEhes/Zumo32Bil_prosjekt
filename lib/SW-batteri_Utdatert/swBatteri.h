@@ -1,5 +1,5 @@
-#ifndef SWBATTERI_H
-#define SWBATTERI_H
+/*
+#pragma once
 
 #include <Arduino.h>
 #include <Zumo32U4.h>
@@ -55,5 +55,4 @@ void debugPrint();
 
 // Hovedsystem – kall denne i loop()
 void battery();
-
-#endif
+*/

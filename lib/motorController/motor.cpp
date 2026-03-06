@@ -2,13 +2,15 @@
 #include "LinjeSensor.h"
 #include "ProxSensors.h"
 #include "init.h"
+#include "zumoBattery.h"
+#include "Cream.h"
 
 int leftSpeed = 0;
 int rightSpeed = 0;
 
 void setSpeeds(){
     
-    if (stopNow){
+    if (proximitySense() || (zumoBatteri.getPercentage() == 0) || sellingIceCream){
         rightSpeed = leftSpeed = 0;
     }
     
@@ -17,7 +19,7 @@ void setSpeeds(){
             rightSpeed = s.right;
             leftSpeed = s.left;
     }
-
-    motors.setSpeeds(rightSpeed, leftSpeed);
+    minIsbil.speed = ((leftSpeed + rightSpeed) / 2);
+    motors.setSpeeds(leftSpeed, rightSpeed);
 
 }

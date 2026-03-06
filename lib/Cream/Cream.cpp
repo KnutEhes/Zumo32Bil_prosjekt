@@ -1,7 +1,7 @@
 #include <Cream.h>
 #include <buzzAndLed.h>
-#include <swBatteri.h>
 #include <ProxSensors.h>
+#include "zumoBattery.h"
 
 
 //antall barn som må til før vi begynner å selge is
@@ -37,7 +37,7 @@ void creamSetup(){
 
 //Ser etter barn og selger is om det er mange nok i nærheten
 void iceCream(){
-    if(!fastCharging && !slowCharging){
+    if(!fastChargeActive && !slowChargeActive){
 
         //Midlertidig kode som genererer ny posisjon med antall barn
         if ((sellingIceCream == false) && (millis() > newPosTime+5000)){
@@ -83,7 +83,7 @@ void iceCream(){
         //Spiller isbilmusikk når den leter etter barn
         //TRENGER BEDRE LØSNING
         if ((sellingIceCream == false) && (lastIceCreamSold + iceCreamSellTime < millis())){
-        //iceCreamBuzz();
+        iceCreamBuzz();
         }
 
 
@@ -96,26 +96,26 @@ void iceCream(){
         }
         //SELGER IS
         if (sellingIceCream == true){
-            stopNow = true; //stopper bilen
             if (lastIceCreamSold + iceCreamSellTime < millis()){
                 //SISTE SALG
                 if (kidMatrix[currentPos[0]][currentPos[1]] < 2){
                     kidMatrix[currentPos[0]][currentPos[1]] = 0;
                     sellingIceCream = false;
-                    stopNow = false;    //starter bilen igjen
                 }
                 else{
                     kidMatrix[currentPos[0]][currentPos[1]] -= 1;
                 }
                 
                 iceCreamSellTime = random(1000, 3000);
-                balance += random (20, 40);
-                //kaChingBuzz();
+                minIsbil.balance += random (20, 40);
+                minIsbil.iceCreams -= 1;
+                kaChingBuzz();
                 lastIceCreamSold = millis();
                 lastKidCheck = millis();
                 Serial.print("Penger totalt: ");
-                Serial.println(balance);
+                Serial.println(minIsbil.balance);
             }
         }
     }
 }
+

@@ -1,3 +1,4 @@
+/*
 #include "swBatteri.h"
 #include "buzzAndLed.h"
 #include "init.h"
@@ -207,3 +208,4 @@ void battery()
     prevBatteryPercent = batteryPercent;
 }
 
+*/

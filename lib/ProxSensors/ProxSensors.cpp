@@ -1,16 +1,16 @@
 #include "ProxSensors.h"
-#include "swBatteri.h"
 #include "init.h"
 
 
-bool objectDetected = false;
-bool stopNow = false;
-unsigned long detected = 0;
-int leftProxSensorValue = 0;
-int rightProxSensorValue = 0;
 
 
-void proximitySense(){
+
+bool proximitySense(){
+    bool objectDetected = false;
+    unsigned long detected = 0;
+    int leftProxSensorValue = 0;
+    int rightProxSensorValue = 0;
+    bool shouldStop = false;
     leftProxSensorValue = proxSensor.countsFrontWithLeftLeds();
     rightProxSensorValue = proxSensor.countsFrontWithRightLeds();
 
@@ -19,15 +19,16 @@ void proximitySense(){
         detected = millis();
     }
     if (((millis() - detected) > 50) && (rightProxSensorValue > limit || leftProxSensorValue > limit) && objectDetected){
-        stopNow = true;
+        shouldStop = true;
     }
     if ((rightProxSensorValue < limit || leftProxSensorValue < limit) && objectDetected){    
         objectDetected = false;
         detected = millis();
     }
     if (((millis() - detected) > 50) && (rightProxSensorValue < limit || leftProxSensorValue < limit) && !objectDetected){
-        stopNow = false;
+        shouldStop = false;
     }
+    return shouldStop;
 /*
     Serial.print(objectDetected);
     Serial.print(stopNow);

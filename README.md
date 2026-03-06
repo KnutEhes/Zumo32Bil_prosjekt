@@ -1,41 +1,80 @@
 # Zumo32Bil_prosjekt
-Prosjekt i IELS Zumo32u4 bil
+FabianPipi
+Arsenal123
+--------------------------------------------------------------------------------
+PROSJEKTPLAN: SMART-CITY (ZUMO & IOT-STACK)
+--------------------------------------------------------------------------------
 
-Obligatoriske moduler:
+1. FYSISK LAG OG BIL (ZUMO & ESP32)
+===================================
+[x] Mekanisk: Designe/lage brett/feste for ESP32 på Zumo-bilen.
+[x] Strøm: Sikre stabil strømforsyning til både ESP32 og Zumo.
+[ ] Kommunikasjon: Sette opp Seriell (UART) mellom Zumo og ESP32.
+[ ] Linjefølging: Teste og finjustere sensorer for stabil kjøring.
+[ ] Ladestasjon: Implementere deteksjon (f.eks. IR-sensor eller ultralyd).
+[ ] Lyskryss: Programmere stopp- og start-logikk basert på signaler.
 
-1. Hovedmodul
-- Modulen skal styre bilens funksjoner og koordinere alle andre moduler.
+2. INFRASTRUKTUR OG NETTVERK (GATEWAY & MQTT)
+==============================================
+[ ] WiFi: Kode ESP32 til å koble seg automatisk til lokalt nett.
+[ ] Broker: Installere og konfigurere Mosquitto på Raspberry Pi.
+[ ] Topic-struktur: Definere meldingsstier (f.eks. smartcity/bil1/status).
+[ ] Sikkerhet: Sette opp brukernavn og passord for MQTT-klienter.
 
-Ekstrapoeng for:
-- God bruk av bilens sensorer.
-- Oversiktlig og robust programstruktur.
-- Implementerte løsninger for å tjene penger.
+3. STYRING OG VISUALISERING (NODE-RED & DASHBOARD)
+==================================================
+[ ] Node-RED: Installere på Raspberry Pi og sette opp flows.
+[ ] Oppstrøms: Tolke JSON-data fra ESP32 og vise i Dashboard.
+[ ] Nedstrøms: Lage knapper i Dashboard som sender MQTT-kommandoer.
+[ ] Styring: Implementere valg for sving (Venstre/Høyre) fra Dashboard.
 
+4. SKY OG EKSTERN TILGANG
+=========================
+[ ] Sky: Sette opp en "Cloud Broker" eller VPN for tilgang utenfor huset.
+[ ] Dashboard: Gjøre brukergrensesnittet tilgjengelig via nettleser.
 
-2. SW-batteri og energihåndtering
-- Emulerer et batteri som lades ut ved kjøring og lades opp ved ladestasjoner. (50%)
-- Skal varsle om lavt batterinivå.
-- Rapporterer batteristatus til resten av systemet.
+--------------------------------------------------------------------------------
+5. BYGRID-SYSTEM (AVANSERT NAVIGASJON)
+======================================
+[ ] Kartlegging: Definere et koordinatsystem eller noder for byen i Node-RED.
+[ ] Posisjonering: Implementere metode for at bilen vet hvilket kryss den er i:
+    - Alternativ A: RFID-tags under banen og leser på bilen.
+    - Alternativ B: Fargekoder i kryssene som Zumo-sensoren leser.
+    - Alternativ C: Telling av krysninger/linjebrudd.
+[ ] Ruteplanlegging: Logikk i Node-RED som finner korteste vei (f.eks. A*).
+[ ] Grid-Dashboard: Lage et visuelt kart i Dashboard som viser bilens posisjon.
 
-Ekstrapoeng for:
-- Realistiske batterifunksjoner (f.eks. degradering over tid, påvirkning av kjøremønster og hurtiglading).
-- Gode metoder for beregning av batteriforbruk basert på kjøremønster.
+--------------------------------------------------------------------------------
+DATAFLYT (SYSTEMARKITEKTUR)
+--------------------------------------------------------------------------------
 
+OPPSTRØMS (Data fra bil til sky)
+-------------------------------------------------------------------------
+Zumo Robot -> (Seriell) -> ESP32 -> (WiFi/MQTT) -> RPi -> Node-RED -> Dashboard
+(Sensorer)                (Node)                 (Gateway)           (Visning)
 
-3. Ladeløsning
-- Bilen skal kunne detektere en "ladestasjon".
-- Skal stoppe ved stasjonen, lade, og fullføre en enkel betalingsprosess. (80%)
-- Ladeløsningen trenger ikke være fysisk.
+NEDSTRØMS (Kommando fra sky til bil)
+-------------------------------------------------------------------------
+Dashboard -> Node-RED -> (MQTT) -> ESP32 -> (Seriell) -> Zumo Robot
+(Knapper)                (Broker)  (Node)                (Aktuatorer)
 
-Ekstrapoeng for:
-- Realistiske lademekanismer med meny og ladestatus (type lading, prosent, osv.).
-- Effektiv håndtering av kundesaldo (penger inn/ut og transaksjoner).
+--------------------------------------------------------------------------------
+UTSTYRSLISTE
+--------------------------------------------------------------------------------
 
+ENHETER:
+[x] Zumo Robot (Pololu)      - Kjøretøy og sensorer
+[x] ESP32 Mikrokontroller    - WiFi-kommunikasjon (Node)
+[x] Raspberry Pi             - Server og Gateway
+[ ] MicroSD-kort             - OS for Raspberry Pi
 
-4. Linjefølging og trafikklys
-- Bilen skal følge en teipbane.
-- Skal stoppe ved rødt lys og kjøre ved grønt (uten kamera).
+KOBLING:
+[ ] Prototypebrett           - For montering på Zumo
+[x] Jumper-kabler            - For seriell kobling (TX/RX)
+[ ] Batterier / Powerbank    - Strømforsyning
 
-Ekstrapoeng for:
-- Utfordringer i banen (krappe svinger, blindgate, rasteplass, manglende teip, osv.) som bilen håndterer korrekt.
-- Bruk av flere sensorer for forbedret navigasjon.
+PROGRAMVARE:
+[x] Arduino IDE / VS Code    - Koding av ESP32
+[ ] Mosquitto                - MQTT Broker
+[ ] Node-RED                 - Logikk og Dashboard
+--------------------------------------------------------------------------------

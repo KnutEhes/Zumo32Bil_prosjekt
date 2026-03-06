@@ -1,6 +1,7 @@
 #include "motor.h"
 #include "driveTo.h"
 #include "LinjeSensor.h"
+#include "init.h"
 #include <Arduino.h>
 #include <Zumo32U4.h>
 float feilMargin = 0.01; //I prosent
@@ -15,10 +16,10 @@ bool turnLeftIntersection = false;
 
 bool driveTo(const pos& bil, const pos& point){
     // Sjekk om bilen er på riktig punkt (innenfor feilmargin på både x og y)
-    bool påRiktigX = (point.x * (1 - feilMargin) < bil.x) && (bil.x < point.x * (1 + feilMargin));
-    bool påRiktigY = (point.y * (1 - feilMargin) < bil.y) && (bil.y < point.y * (1 + feilMargin));
+    bool paRiktigX = (point.x * (1 - feilMargin) < bil.x) && (bil.x < point.x * (1 + feilMargin));
+    bool paRiktigY = (point.y * (1 - feilMargin) < bil.y) && (bil.y < point.y * (1 + feilMargin));
 
-    if (påRiktigX && påRiktigY) {
+    if (paRiktigX && paRiktigY) {
         motors.setSpeeds(0, 0);
         start = 0;
         turnInProgress = false;
@@ -61,7 +62,7 @@ bool driveTo(const pos& bil, const pos& point){
     bool intersectionEvent = consumeIntersectionEvent();
 
     // Kjør mot riktig x-posisjon først
-    if (!påRiktigX) {
+    if (!paRiktigX) {
         if (bil.x < point.x) {
             start = 0;
             setSpeeds();
@@ -84,7 +85,7 @@ bool driveTo(const pos& bil, const pos& point){
     }
 
     // Når x er riktig men y er feil: sving opp/ned med timet vridning
-    if (!påRiktigY) {
+    if (!paRiktigY) {
         if (intersectionEvent || isAtIntersection()) {
             start = millis();
             turnTimeout = 700;

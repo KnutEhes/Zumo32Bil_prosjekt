@@ -26,7 +26,6 @@ void loop() {
 
   proximitySense();
   zumoBatteri.batteryLoop(slowCharge, fastCharge, minIsbil);
-  zumoBatteri.testIcles();
   iceCream();  
   driveTo(bilPos, targetPos);
 

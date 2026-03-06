@@ -22,4 +22,3 @@ bool consumeIntersectionEvent();
 
 // True når bilen ligger sentrert på én linje (nyttig for å avslutte en sving).
 bool isCenteredOnLine();
-

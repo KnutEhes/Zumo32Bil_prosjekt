@@ -135,5 +135,3 @@ bool isCenteredOnLine() {
   // Sentrert på en enkel linje: midtsensor ser tydelig linje, og vi står ikke i kryss.
   return centerActive && !leftOuterActive && !rightOuterActive && !atIntersectionNow;
 }
-
-

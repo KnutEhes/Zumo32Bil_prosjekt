@@ -69,7 +69,7 @@ void Battery::batteryHealth(){
         buzzer.playNote(NOTE_A(4), 200, 15);
     }
 }
-
+/*
 void Battery::testIcles() {
     // Sett layout til 21 tegn per linje og 4 linjer (mindre skrift)
     // Dette fungerer på Zumo32U4OLED
@@ -100,3 +100,4 @@ void Battery::testIcles() {
     display.print("Iskrem:  ");
     display.print(minIsbil.iceCreams);
 }
+*/

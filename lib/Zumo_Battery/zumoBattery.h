@@ -43,7 +43,7 @@ public:
     void draining(Charger& slowCharge, Charger& fastCharge, Isbil& zumo);
     void batteryLoop(Charger& slowCharge, Charger& fastCharge, Isbil& zumo);
     void batteryHealth();
-    void testIcles();
+    //void testIcles();
     unsigned long lastUpdate = 0;
     const unsigned long updateInterval = 200;
 };

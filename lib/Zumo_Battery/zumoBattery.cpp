@@ -20,7 +20,8 @@ void Battery::batteryLoop(Charger& slowCharge, Charger& fastCharge, Isbil& zumo)
         draining(slowCharge, fastCharge, zumo);
         batteryHealth();
         lastUpdate = millis();
-        prevPercent = getPercentage();
+        minIsbil.batteryLevel = prevPercent = getPercentage();
+        
     }
 }
 

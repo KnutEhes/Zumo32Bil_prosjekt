@@ -22,12 +22,13 @@ public:
 
 struct Isbil {
     float balance;
+    float batteryLevel;
     int iceCreams;
     float speed;
 
     // Fix: Add parameters to the constructor so it actually sets values
-    Isbil(float b = 0, int i = 0, float s = 0) 
-        : balance(b), iceCreams(i), speed(s) {}
+    Isbil(float b = 0, int i = 0, float s = 0, float battery = 0) 
+        : balance(b), iceCreams(i), speed(s), batteryLevel(battery) {}
 };
 
 class Battery {

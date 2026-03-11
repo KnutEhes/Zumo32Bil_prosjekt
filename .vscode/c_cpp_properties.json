@@ -1,0 +1,92 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/include",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/src",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/driveTo",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/motorController",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/LineFollowing",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/Cream",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/Buzzer and leds",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/ProxSensors",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/Zumo_Battery",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/Init",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/Zumo32U4/src",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/PololuOLED/src",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/PololuHD44780",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/PololuBuzzer/src",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/USBPause",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/Pushbutton",
+                "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/FastGPIO",
+                "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/variants/leonardo",
+                "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/PololuMenu/src",
+                "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/include",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/src",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/driveTo",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/motorController",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/LineFollowing",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/Cream",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/Buzzer and leds",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/ProxSensors",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/Zumo_Battery",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/lib/Init",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/Zumo32U4/src",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/PololuOLED/src",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/PololuHD44780",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/PololuBuzzer/src",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/USBPause",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/Pushbutton",
+                    "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/FastGPIO",
+                    "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/variants/leonardo",
+                    "C:/Users/pk_ro/OneDrive/Documents/STUDIER/26V/IELS2001 - Ingeniørprosjekt I/Zumo32Bil_prosjekt/.pio/libdeps/a-star32U4/PololuMenu/src",
+                    "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/pk_ro/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60119",
+                "ARDUINO_AVR_A_STAR_32U4",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "USB_VID=0x1ffb",
+                "USB_PID=0x2300",
+                "USB_PRODUCT=\"Pololu A-Star 32U4\"",
+                "USB_MANUFACTURER=\"Pololu Corporation\"",
+                "__AVR_ATmega32U4__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/pk_ro/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega32u4",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}

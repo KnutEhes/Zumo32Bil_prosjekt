@@ -16,6 +16,7 @@ void initAll(){
 
     Serial.begin(9600);
     proxSensor.initFrontSensor();
+    
     initLineSensors();
     delay(20);
     calibrateSensors();

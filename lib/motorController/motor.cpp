@@ -10,7 +10,7 @@ int rightSpeed = 0;
 
 void setSpeeds(){
     
-    if (proximitySense() ||(zumoBatteri.getPercentage() == 0)){ //Bilen skal stoppe hvis noe av dette er sant
+    if (proximitySense() ||(zumoBatteri.getPercentage() == 0) || sellingIceCream){ //Bilen skal stoppe hvis noe av dette er sant
         rightSpeed = leftSpeed = 0;
     }
     

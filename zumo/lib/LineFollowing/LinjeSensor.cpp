@@ -13,10 +13,10 @@ int16_t lastError = 0;
 int16_t lastSpeedDifference = 0;
 uint16_t crossingCount = 0;    // Track total crossings detected
 
-// PID gains - justert for roligere styring
-const float Kp = 1.1 / 14.0;
-const float Kd = 0.6 / 14.0;
-const float filterAlpha = 0.6; // Litt mer demping
+// PID gains - justert for krappere svinger
+const float Kp = 1.8 / 14.0;
+const float Kd = 1.1 / 14.0;
+const float filterAlpha = 0.8; // Mindre treghet i responsen
 
 // Sensor buffer (5 sensors)
 const uint8_t numSensors = 5;
@@ -92,9 +92,9 @@ MotorSpeeds lineFollower() {
   // Low-pass filter for smooth transitions
   speedDifference = (int16_t)(filterAlpha * speedDifference + (1 - filterAlpha) * lastSpeedDifference);
 
-  // Limit speed difference to allow sharp turns but prevent extremes
-  if (speedDifference > 120) speedDifference = 120;
-  if (speedDifference < -120) speedDifference = -120;
+  // Storre differanse gir krappere svinger, inkludert mulighet for ett hjul bakover.
+  if (speedDifference > 220) speedDifference = 220;
+  if (speedDifference < -220) speedDifference = -220;
 
   lastError = error;
   lastSpeedDifference = speedDifference;

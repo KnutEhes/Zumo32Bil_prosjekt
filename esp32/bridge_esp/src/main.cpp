@@ -1,18 +1,25 @@
 #include <esp_now.h>
 #include <WiFi.h>
-#include <WebSocketsClient.h>
+// #include <WebSocketsClient.h>
 
-WebSocketsClient webSocket;
+// WebSocketsClient webSocket;
 
 // 1. MAC-ADRESSE TIL MOTTAKER
-uint8_t broadcastAddress[] = {0x84, 0x1F, 0xE8, 0x3A, 0x44, 0x28};
+uint8_t zumoAddress[] = {0x84, 0x1F, 0xE8, 0x3A, 0x44, 0x28};
+uint8_t lightAddress[] = {0x00, 0x4b, 0x12, 0x3c, 0x24, 0xc0};
+
+void printIncomingData();
 
 // Strukturer
-typedef struct send_message {
+typedef struct zumo_message {
     bool trafficLightGreen;
     char nextTurn;
     char posName;
-} send_message;
+} zumo_message;
+
+typedef struct light_message {
+    bool isGreen;
+} light_message;
 
 typedef struct receive_message {
     float balance;
@@ -21,10 +28,12 @@ typedef struct receive_message {
     uint16_t iceCreams;
 } receive_message;
 
-send_message infoToSend;
+zumo_message infoToZumo;
+light_message infoToLight;
 receive_message incomingInfo;
 esp_now_peer_info_t peerInfo;
 
+/*
 // WebSocket Event Handler
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   switch(type) {
@@ -39,6 +48,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
       break;
   }
 }
+*/
 
 // Callback når data er sendt
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
@@ -46,33 +56,35 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
-// Callback når data er mottatt (Fikset for eldre/standard versjon)
+// Callback når data er mottatt
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   memcpy(&incomingInfo, incomingData, sizeof(incomingInfo));
   
-  // Vi lager en tekststreng av dataene for å sende sikkert til RPi
-  String wsPayload = String(incomingInfo.balance) + "," + 
-                     String(incomingInfo.speed) + "," + 
-                     String(incomingInfo.batteryLevel) + "," + 
-                     String(incomingInfo.iceCreams);
+  // Serial.println-logikk for debugging
+  String debugPayload = String(incomingInfo.balance) + "," + 
+                        String(incomingInfo.speed) + "," + 
+                        String(incomingInfo.batteryLevel) + "," + 
+                        String(incomingInfo.iceCreams);
   
-  webSocket.sendTXT(wsPayload); // Sender som tekst til Raspberry Pi
-  Serial.println("Data videresendt til RPi: " + wsPayload);
+  // webSocket.sendTXT(wsPayload); 
+  Serial.println("Mottatt fra Zumo: " + debugPayload);
 }
 
 void setup() {
   Serial.begin(115200);
 
-  // WiFi må settes opp før ESP-NOW
+  // WiFi mode må være STA for ESP-NOW
   WiFi.mode(WIFI_STA);
-  WiFi.begin("Ditt_SSID", "Ditt_Passord");
   
+  /*
+  WiFi.begin("Ditt_SSID", "Ditt_Passord");
   Serial.print("Kobler til WiFi...");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
   Serial.println("\nWiFi tilkoblet!");
+  */
 
   // Initialiser ESP-NOW
   if (esp_now_init() != ESP_OK) {
@@ -80,44 +92,53 @@ void setup() {
     return;
   }
 
-  // Registrer callbacks - fjernet unødvendig typecasting som ofte feiler
   esp_now_register_send_cb(OnDataSent);
   esp_now_register_recv_cb(OnDataRecv);
   
   // Legg til peer
-  memcpy(peerInfo.peer_addr, broadcastAddress, 6);
-  peerInfo.channel = 0; // Bruker samme kanal som WiFi
+  memcpy(peerInfo.peer_addr, zumoAddress, 6);
+  peerInfo.channel = 0; 
   peerInfo.encrypt = false;
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) Serial.println("Feilet å legge til Zumo");
+
+  // NYTT: Registrer Lyskryss som Peer
+  memcpy(peerInfo.peer_addr, lightAddress, 6);
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) Serial.println("Feilet å legge til Lyskryss");
   
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
-  }
-  
-  // WebSocket setup (husk å endre IP!)
+  /*
+  // WebSocket setup
   webSocket.begin("192.168.x.x", 81, "/"); 
   webSocket.onEvent(webSocketEvent);
-  webSocket.setReconnectInterval(5000); // Prøv på nytt hvert 5. sek hvis den faller ut
+  webSocket.setReconnectInterval(5000); 
+  */
 }
 
 void loop() {
-  webSocket.loop();
+  // webSocket.loop();
 
   // Oppdater data som skal sendes
-  infoToSend.trafficLightGreen = false;
-  infoToSend.nextTurn = 'L';
-  infoToSend.posName = 'H';
 
-  // Send hvert 5. sekund for å ikke floode nettverket mens du tester
+
   static unsigned long lastSend = 0;
   if (millis() - lastSend > 5000) {
-    esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &infoToSend, sizeof(infoToSend));
     lastSend = millis();
+
+    // 1. OPPSETT AV DATA (Gjør dette først!)
+    infoToZumo.trafficLightGreen = false;
+    infoToZumo.nextTurn = 'L';
+    infoToZumo.posName = 'H';
+
+    infoToLight.isGreen = true; 
+
+    // 2. SEND DATA (Etter at verdiene er satt)
+    esp_err_t resultZumo = esp_now_send(zumoAddress, (uint8_t *) &infoToZumo, sizeof(infoToZumo));
+    esp_err_t resultLight = esp_now_send(lightAddress, (uint8_t *) &infoToLight, sizeof(infoToLight));
     
-    if (result == ESP_OK) {
-      Serial.println("ESP-NOW sendt suksessfullt");
+    // Debug-utskrift
+    if (resultZumo == ESP_OK && resultLight == ESP_OK) {
+      Serial.println("Begge meldingene ble sendt!");
     } else {
-      Serial.println("ESP-NOW send feilet");
+      Serial.println("En eller begge sendingene feilet.");
     }
     
     printIncomingData();

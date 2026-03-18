@@ -21,7 +21,7 @@ struct ZumoInstructions{
   
   ZumoInstructions(uint8_t t = 0, char n = 'F')
     : trafficLightState(t), nextTurn(n) {}
-}
+};
 
 void setup() {
   
@@ -36,5 +36,6 @@ void loop() {
   zumoBatteri.batteryLoop(slowCharge, fastCharge, minIsbil);
   iceCream();  
   driveTo(bilPos, targetPos);
+
 
 }

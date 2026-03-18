@@ -7,6 +7,31 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include <esp_wifi.h>
+#include <Arduino.h>
+#include <Wire.h>
+
+#define zumoAddress 0x55
+
+/*
+struct ZumoInstructions{    //foreløpig struct, ikke i bruk enda.
+  uint8_t trafficLightState;
+  char nextTurn;
+};
+*/
+
+struct sendMessage {  //totalt 16 bytes av en eller anna grunn
+    float balance;  //4bytes
+    float speed;    //4bytes
+    float batteryLevel; //4bytes
+    uint16_t iceCreams;  //2 bytes
+
+    // Fix: Add parameters to the constructor so it actually sets values
+    sendMessage(float b = 0, float s = 0, float bL = 0, uint16_t i = 0) 
+        : balance(b),  speed(s), batteryLevel(bL), iceCreams(i) {}
+};
+
+
+sendMessage minIsbilInfo{1000.0, 0.0, 10, 50};
 
 
 void updateDisplay();
@@ -14,29 +39,34 @@ void getReadings();
 
 // REPLACE WITH THE MAC Address of your receiver 
 uint8_t broadcastAddress[] = {0x64, 0xB7, 0x08, 0x29, 0x1A, 0x2C};
-
+ 
 // Define variables to store BME280 readings to be sent
-float balance;
-float speed;
-float batteryLevel;
-uint16_t iceCreams;
+float balanceReading;
+float speedReading;
+float batteryLevelReading;
+uint16_t iceCreamsReading;
 
 // Define variables to store incoming readings
-bool trafficLightGreen;
-char nextTurn; //Sier hvilken vei du skal svinge i neste sving
-char posName; //Sier om man kjører, er på lader eller selger is osv.
+//bool trafficLightGreen;
+//char nextTurn; //Sier hvilken vei du skal svinge i neste sving
+//char posName; //Sier om man kjører, er på lader eller selger is osv.
 
 // Variable to store if sending data was successful
 String success;
 
 //Structure example to send data
 //Must match the receiver structure
+
+/*
 typedef struct send_message {
     float balance;
     float speed;
     float batteryLevel;
     uint16_t iceCreams;
 } send_message;
+*/
+
+
 
 typedef struct recive_message {
     bool trafficLightGreen;
@@ -45,7 +75,7 @@ typedef struct recive_message {
 } recive_message;
 
 // Create a struct_message called BME280Readings to hold sensor readings
-send_message zumoInfo;
+//send_message IsbilInfo(minIsbil);
 
 // Create a struct_message to hold incoming sensor readings
 recive_message incomingInfo;
@@ -75,12 +105,11 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 }
  
 void setup() {
-  // Init Serial Monitor
+
   Serial.begin(115200);
-
-
-  // Set device as a Wi-Fi Station
+  Wire.begin();
   WiFi.mode(WIFI_STA);
+  // Set device as a Wi-Fi Station
 
   // Hvis ruteren din er på kanal 6, skriv 6 her. 
   // Du kan finne kanalen ved å skrive Serial.println(WiFi.channel()) på Gatewayen.
@@ -114,17 +143,21 @@ void setup() {
 }
  
 void loop() {
-  getReadings();
  
-  // Set values to send
-  zumoInfo.balance = balance;
-  zumoInfo.batteryLevel = batteryLevel;
-  zumoInfo.iceCreams = iceCreams;
-  zumoInfo.speed = speed;
+  Wire.requestFrom(zumoAddress, sizeof(minIsbilInfo));
+  Wire.readBytes((uint8_t*)&minIsbilInfo, sizeof(minIsbilInfo));
 
-  // Send message via ESP-NOW
-  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &zumoInfo, sizeof(zumoInfo));
-   
+  esp_err_t result;
+  byte available = Wire.requestFrom(zumoAddress, sizeof(minIsbilInfo));
+  if (available == sizeof(minIsbilInfo)) {
+      Wire.readBytes((uint8_t*)&minIsbilInfo, sizeof(minIsbilInfo));
+
+      result = esp_now_send(broadcastAddress, (uint8_t *) &minIsbilInfo, sizeof(minIsbilInfo));
+
+  }
+  
+
+
   if (result == ESP_OK) {
     Serial.println("Sent with success");
   }
@@ -134,12 +167,7 @@ void loop() {
   updateDisplay();
   delay(1000);
 }
-void getReadings(){//Fa info fra ledning kommunikasjon er
-  balance = 1000.0;
-  batteryLevel = 67.0;
-  iceCreams = 37;
-  speed = 112.3;
-}
+
 
 void updateDisplay(){
   
@@ -155,4 +183,16 @@ void updateDisplay(){
   Serial.print(incomingInfo.trafficLightGreen);
   Serial.println(" ");
   Serial.println();
+
+  Serial.print("størrelse på paketet: ");
+  Serial.println(sizeof(minIsbilInfo));
+  Serial.print("balance: ");
+  Serial.println(minIsbilInfo.balance);
+  Serial.print("fart (vroooom): ");
+  Serial.println(minIsbilInfo.speed);
+  Serial.print("batterinivå: ");
+  Serial.println(minIsbilInfo.batteryLevel);
+  Serial.print("antall is i bagasjen: ");
+  Serial.println(minIsbilInfo.iceCreams);
+  
 }

@@ -1,7 +1,7 @@
 #include "zumoBattery.h"
 #include "init.h"
 
-Isbil minIsbil{1000.0, 50, 0.0};
+Isbil minIsbil{1000.0, 50, 0.0, 0};
 Charger slowCharge(10.0, 1.0);
 Charger fastCharge(20.0, 5.0);
 Battery zumoBatteri;

@@ -1,7 +1,7 @@
 #include "zumoBattery.h"
 #include "init.h"
 
-Isbil minIsbil{1000.0, 50, 0.0, 0};
+Isbil minIsbil{1000.0, 50, 0.0, 50};
 Charger slowCharge(10.0, 1.0);
 Charger fastCharge(20.0, 5.0);
 Battery zumoBatteri;
@@ -70,7 +70,7 @@ void Battery::batteryHealth(){
         buzzer.playNote(NOTE_A(4), 200, 15);
     }
 }
-/*
+
 void Battery::testIcles() {
     // Sett layout til 21 tegn per linje og 4 linjer (mindre skrift)
     // Dette fungerer på Zumo32U4OLED
@@ -101,4 +101,3 @@ void Battery::testIcles() {
     display.print("Iskrem:  ");
     display.print(minIsbil.iceCreams);
 }
-*/

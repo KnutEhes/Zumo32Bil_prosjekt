@@ -24,7 +24,7 @@ struct Isbil {
     float balance;
     float speed;
     float batteryLevel;
-    int iceCreams;
+    uint16_t iceCreams;
 
     // Fix: Add parameters to the constructor so it actually sets values
     Isbil(float b = 0, float s = 0, float battery = 0, int i = 0) 
@@ -44,7 +44,7 @@ public:
     void draining(Charger& slowCharge, Charger& fastCharge, Isbil& zumo);
     void batteryLoop(Charger& slowCharge, Charger& fastCharge, Isbil& zumo);
     void batteryHealth();
-    //void testIcles();
+    void testIcles();
     unsigned long lastUpdate = 0;
     const unsigned long updateInterval = 200;
 };

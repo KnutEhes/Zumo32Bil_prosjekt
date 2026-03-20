@@ -35,11 +35,12 @@ sendMessage minIsbilInfo{1000.0, 0.0, 10, 50};
 
 
 void updateDisplay();
-void getReadings();
 
 // REPLACE WITH THE MAC Address of your receiver 
-uint8_t broadcastAddress[] = {0x64, 0xB7, 0x08, 0x29, 0x1A, 0x2C};
- 
+//uint8_t broadcastAddress[] = {0x64, 0xB7, 0x08, 0x29, 0x1A, 0x2C};
+//uint8_t broadcastAddress[] = {0x84, 0x1F, 0xE8, 0x3A, 0x44, 0x28};
+uint8_t broadcastAddress[] = {0x00, 0x4B, 0x12, 0x3B, 0x7C, 0x3C};
+
 // Define variables to store BME280 readings to be sent
 float balanceReading;
 float speedReading;
@@ -105,7 +106,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 }
  
 void setup() {
-
+  unsigned long int lastSend = millis();
   Serial.begin(115200);
   Wire.begin();
   WiFi.mode(WIFI_STA);
@@ -113,7 +114,7 @@ void setup() {
 
   // Hvis ruteren din er på kanal 6, skriv 6 her. 
   // Du kan finne kanalen ved å skrive Serial.println(WiFi.channel()) på Gatewayen.
-  int channel = 6; 
+  int channel = 11; 
   esp_wifi_set_promiscuous(true);
   esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
   esp_wifi_set_promiscuous(false);
@@ -143,6 +144,7 @@ void setup() {
 }
  
 void loop() {
+  lastSend = millis();
  
   Wire.requestFrom(zumoAddress, sizeof(minIsbilInfo));
   Wire.readBytes((uint8_t*)&minIsbilInfo, sizeof(minIsbilInfo));

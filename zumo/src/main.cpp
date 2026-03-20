@@ -36,6 +36,6 @@ void loop() {
   zumoBatteri.batteryLoop(slowCharge, fastCharge, minIsbil);
   iceCream();  
   driveTo(bilPos, targetPos);
-
+  zumoBatteri.testIcles();
 
 }

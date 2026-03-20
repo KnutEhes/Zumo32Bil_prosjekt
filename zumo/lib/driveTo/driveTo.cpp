@@ -4,33 +4,23 @@
 #include "init.h"
 #include <Arduino.h>
 #include <Zumo32U4.h>
-float feilMargin = 0.01; //I prosent
-unsigned long start; 
-int turnLeftSpeed = 0;
-int turnRightSpeed = 0;
-unsigned long turnTimeout = 0;
-unsigned long turnMinDuration = 0;
-bool turnInProgress = false;
-bool turnLeftIntersection = false;
 
+static unsigned long start = 0;
+static int turnLeftSpeed = 0;
+static int turnRightSpeed = 0;
+static unsigned long turnTimeout = 0;
+static unsigned long turnMinDuration = 0;
+static bool turnInProgress = false;
+static bool turnLeftIntersection = false;
 
-bool driveTo(const pos& bil, const pos& point){
-    // Sjekk om bilen er på riktig punkt (innenfor feilmargin på både x og y)
-    bool paRiktigX = (point.x * (1 - feilMargin) < bil.x) && (bil.x < point.x * (1 + feilMargin));
-    bool paRiktigY = (point.y * (1 - feilMargin) < bil.y) && (bil.y < point.y * (1 + feilMargin));
+// Returnerer true når svingen er fullført — klar for neste instruksjon fra server.
+// nextDir: 'F' = rett frem, 'L' = venstre, 'R' = høyre, 'U' = snu (180°)
+bool driveTo(char nextDir) {
 
-    if (paRiktigX && paRiktigY) {
-        motors.setSpeeds(0, 0);
-        start = 0;
-        turnInProgress = false;
-        return true;
-    }
-
-    // Fullfor påbegynt sving/snu basert på linjesensor: forlat kryss, finn sentrert linje.
+    // Fullfør pågående sving
     if (turnInProgress) {
         motors.setSpeeds(turnLeftSpeed, turnRightSpeed);
 
-        // Ikke avbryt svingen for tidlig selv om linje oppdages med en gang.
         if (millis() - start < turnMinDuration) {
             return false;
         }
@@ -45,79 +35,53 @@ bool driveTo(const pos& bil, const pos& point){
                 turnLeftIntersection = false;
                 start = 0;
                 setSpeeds();
-                return false;
+                return true;
             }
         }
 
-        // Sikkerhetsnett hvis linje ikke finnes av en eller annen grunn.
+        // Sikkerhetsnett hvis linje ikke finnes
         if (millis() - start > turnTimeout) {
             turnInProgress = false;
             turnLeftIntersection = false;
             start = 0;
             setSpeeds();
+            return true;
         }
         return false;
     }
 
-    bool intersectionEvent = consumeIntersectionEvent();
-
-    // Kjør mot riktig x-posisjon først
-    if (!paRiktigX) {
-        if (bil.x < point.x) {
-            start = 0;
+    // Kryss oppdaget: utfør retning
+    if (consumeIntersectionEvent()) {
+        if (nextDir == 'F') {
             setSpeeds();
-        } else {
-            // Forbi x: snu kun i kryss.
-            if (intersectionEvent || isAtIntersection()) {
-                start = millis();
-                turnTimeout = 900;
-                turnMinDuration = 450;
-                turnLeftSpeed = -200;
-                turnRightSpeed = 200;
-                turnInProgress = true;
-                turnLeftIntersection = false;
-                motors.setSpeeds(turnLeftSpeed, turnRightSpeed);
-            } else {
-                setSpeeds();
-            }
+            return true;
         }
-        return false;
-    }
 
-    // Når x er riktig men y er feil: sving opp/ned med timet vridning
-    if (!paRiktigY) {
-        if (intersectionEvent || isAtIntersection()) {
-            start = millis();
+        start = millis();
+        turnInProgress = true;
+        turnLeftIntersection = false;
+
+        if (nextDir == 'U') {
+            turnTimeout = 900;
+            turnMinDuration = 450;
+            turnLeftSpeed = -200;
+            turnRightSpeed = 200;
+        } else if (nextDir == 'L') {
             turnTimeout = 700;
             turnMinDuration = 180;
-            if (bil.y < point.y) {
-                turnLeftSpeed = -200;
-                turnRightSpeed = 200;
-            } else {
-                turnLeftSpeed = 200;
-                turnRightSpeed = -200;
-            }
-            turnInProgress = true;
-            turnLeftIntersection = false;
-            motors.setSpeeds(turnLeftSpeed, turnRightSpeed);
-        } else {
-            setSpeeds();
+            turnLeftSpeed = -200;
+            turnRightSpeed = 200;
+        } else { // 'R'
+            turnTimeout = 700;
+            turnMinDuration = 180;
+            turnLeftSpeed = 200;
+            turnRightSpeed = -200;
         }
-        return false;
+
+        motors.setSpeeds(turnLeftSpeed, turnRightSpeed);
+    } else {
+        setSpeeds();
     }
 
     return false;
-}
-
-
-void checkTypePoint(pos point){
-    if(point.type == 'F'){ 
-    
-    } 
-    if(point.type == 'S'){
-
-    }
-    if(point.type == 'B'){
-
-    }
 }

@@ -11,17 +11,15 @@
 #include "motor.h"
 #include "zumoBattery.h"
 
-// Midlertidige posisjoner for testing av driveTo-flyt i hovedkoden.
-pos bilPos = {0.0f, 0.0f, 'F'};
-pos targetPos = {1.0f, 0.0f, 'F'};
-
-struct ZumoInstructions{
+struct ZumoInstructions {
   uint8_t trafficLightState;
   char nextTurn;
-  
+
   ZumoInstructions(uint8_t t = 0, char n = 'F')
     : trafficLightState(t), nextTurn(n) {}
-}
+};
+
+ZumoInstructions instructions;
 
 void setup() {
   
@@ -35,6 +33,6 @@ void loop() {
   proximitySense();
   zumoBatteri.batteryLoop(slowCharge, fastCharge, minIsbil);
   iceCream();  
-  driveTo(bilPos, targetPos);
+  driveTo(instructions.nextTurn);
 
 }

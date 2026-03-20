@@ -1,0 +1,34 @@
+[
+    {
+        "tag_id": 10,
+        "anchors": {
+            "A1": {
+                "distance": 116.82,
+                "raw": 116.82,
+                "rssi": -62.23,
+                "fp_rssi": -63.10,
+                "round_time": 66071380,
+                "reply_time": 81007788,
+                "clock_offset": -0.000004
+            },
+            "A2": {
+                "distance": 112.60,
+                "raw": 115.42,
+                "rssi": -68.32,
+                "fp_rssi": -73.36,
+                "round_time": 68508406,
+                "reply_time": 79276298,
+                "clock_offset": -0.000001
+            },
+            "A3": {
+                "distance": 123.86,
+                "raw": 124.33,
+                "rssi": -68.28,
+                "fp_rssi": -69.81,
+                "round_time": 68377096,
+                "reply_time": 79564280,
+                "clock_offset": -0.000001
+            }
+        }
+    }
+]

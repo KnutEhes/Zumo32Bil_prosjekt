@@ -220,7 +220,7 @@ void setup() {
 
     ws.begin(WS_HOST, WS_PORT, WS_PATH);
     ws.onEvent(onWsEvent);
-    ws.setReconnectInterval(3000);
+    ws.setReconnectInterval(500);
     ws.enableHeartbeat(15000, 3000, 2);
 }
 

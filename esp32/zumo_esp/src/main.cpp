@@ -19,6 +19,10 @@ struct ZumoInstructions{    //foreløpig struct, ikke i bruk enda.
 };
 */
 
+unsigned long lastI2CTransmit = 50;
+unsigned long lastI2CReceive = 0;
+unsigned long I2CTxRxWaitTime = 100;
+
 struct sendMessage {  //totalt 16 bytes av en eller anna grunn
     float balance;  //4bytes
     float speed;    //4bytes
@@ -73,13 +77,16 @@ typedef struct recive_message {
     bool trafficLightGreen;
     char nextTurn;
     char posName;
+
+    recive_message(bool l = true, char t = 0, char p = 0)
+        : trafficLightGreen(l), nextTurn(t), posName(p) {}
 } recive_message;
 
 // Create a struct_message called BME280Readings to hold sensor readings
 //send_message IsbilInfo(minIsbil);
 
 // Create a struct_message to hold incoming sensor readings
-recive_message incomingInfo;
+recive_message zumoInstructions;
 
 esp_now_peer_info_t peerInfo;
 
@@ -97,12 +104,12 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 
 // Callback when data is received
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-  memcpy(&incomingInfo, incomingData, sizeof(incomingInfo));
+  memcpy(&zumoInstructions, incomingData, sizeof(zumoInstructions));
   Serial.print("Bytes received: ");
   Serial.println(len);
-  char incomingDir = incomingInfo.nextTurn;
-  char incomingPosInfo = incomingInfo.posName;
-  bool incomingTLS = incomingInfo.trafficLightGreen;
+  char incomingDir = zumoInstructions.nextTurn;
+  char incomingPosInfo = zumoInstructions.posName;
+  bool incomingTLS = zumoInstructions.trafficLightGreen;
 }
  
 void setup() {
@@ -144,10 +151,12 @@ void setup() {
 }
  
 void loop() {
-  lastSend = millis();
  
-  Wire.requestFrom(zumoAddress, sizeof(minIsbilInfo));
-  Wire.readBytes((uint8_t*)&minIsbilInfo, sizeof(minIsbilInfo));
+  if(lastI2CReceive < millis()-I2CTxRxWaitTime){
+    Wire.requestFrom(zumoAddress, sizeof(minIsbilInfo));
+    Wire.readBytes((uint8_t*)&minIsbilInfo, sizeof(minIsbilInfo));
+    lastI2CReceive = millis();
+  }
 
   esp_err_t result;
   byte available = Wire.requestFrom(zumoAddress, sizeof(minIsbilInfo));
@@ -158,6 +167,12 @@ void loop() {
 
   }
   
+    if(lastI2CTransmit < millis()-I2CTxRxWaitTime){
+      Wire.beginTransmission(zumoAddress);
+      Wire.write((uint8_t*)&zumoInstructions, sizeof(zumoInstructions));
+      Wire.endTransmission();
+      lastI2CTransmit = millis();
+    }
 
 
   if (result == ESP_OK) {
@@ -171,18 +186,19 @@ void loop() {
 }
 
 
+
 void updateDisplay(){
   
   // Display Readings in Serial Monitor
   Serial.println("INCOMING READINGS");
   Serial.print("Neste sving: ");
-  Serial.print(incomingInfo.nextTurn);
+  Serial.print(zumoInstructions.nextTurn);
   Serial.println(" ");
   Serial.print("Posisjon nå: ");
-  Serial.print(incomingInfo.posName);
+  Serial.print(zumoInstructions.posName);
   Serial.println(" ");
   Serial.print("Neste Trafikklys er grønt: ");
-  Serial.print(incomingInfo.trafficLightGreen);
+  Serial.print(zumoInstructions.trafficLightGreen);
   Serial.println(" ");
   Serial.println();
 
@@ -196,5 +212,6 @@ void updateDisplay(){
   Serial.println(minIsbilInfo.batteryLevel);
   Serial.print("antall is i bagasjen: ");
   Serial.println(minIsbilInfo.iceCreams);
+  
   
 }

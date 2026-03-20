@@ -15,8 +15,6 @@
 struct ZumoInstructions {
     bool trafficLightState;
     char nextTurn;
-    ZumoInstructions(uint8_t t = 0, char n = 'F')
-        : trafficLightState(t), nextTurn(n) {}
 };
 
 struct Isbil {
@@ -24,55 +22,119 @@ struct Isbil {
     float speed;
     float batteryLevel;
     uint16_t iceCreams;
-    Isbil(float b = 0, float s = 0, float battery = 0, int i = 0)
-        : balance(b), speed(s), batteryLevel(battery), iceCreams(i) {}
+};
+
+struct AnchorData {
+    float distance;
+    float raw;
+    float rssi;
+    float fp_rssi;
+    uint32_t round_time;
+    uint32_t reply_time;
+    float clock_offset;
+};
+
+struct UWBTag {
+    uint16_t tag_id;
+    AnchorData A1;
+    AnchorData A2;
+    AnchorData A3;
 };
 
 // ─── Node MAC-adresser ────────────────────────────────
 uint8_t nodeMacs[][6] = {
     {0x84, 0x1F, 0xE8, 0x39, 0xD5, 0x94},  // node 1 - isbil
-    // {0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF},  // node 2
+    {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF},   // node 2 - UWB (bytt ut med riktig MAC)
 };
-const int NODE_COUNT = 1;
+const int NODE_COUNT = 2;
 
 WebSocketsClient ws;
 esp_now_peer_info_t peerInfo;
+unsigned long lastNodeRecv[NODE_COUNT] = {0};
 
 // ─── Sendt til node: bekreftelse ─────────────────────
-void onDataSent(const wifi_tx_info_t *info, esp_now_send_status_t status) {
-    if (status == ESP_NOW_SEND_SUCCESS) {
-        Serial.println("ESP-NOW til node: OK");
-    } else {
-        Serial.println("ESP-NOW til node: FEIL");
-    }
+void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+    Serial.println(status == ESP_NOW_SEND_SUCCESS ? "ESP-NOW til node: OK" : "ESP-NOW til node: FEIL");
 }
 
-// ─── Mottatt fra node: Isbil struct → JSON → server ──
-void onDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
-    if (len < sizeof(Isbil)) {
-        Serial.println("Mottatt data er for kort");
-        return;
+// ─── Hjelpefunksjon: fyll inn anker-felt i JSON ───────
+static void fillAnchor(JsonObject obj, const AnchorData &a) {
+    obj["distance"]     = a.distance;
+    obj["raw"]          = a.raw;
+    obj["rssi"]         = a.rssi;
+    obj["fp_rssi"]      = a.fp_rssi;
+    obj["round_time"]   = a.round_time;
+    obj["reply_time"]   = a.reply_time;
+    obj["clock_offset"] = a.clock_offset;
+}
+
+// ─── Mottatt fra node ─────────────────────────────────
+void onDataRecv(const uint8_t *mac_addr, const uint8_t *data, int len) {
+    int nodeIndex = -1;
+    for (int i = 0; i < NODE_COUNT; i++) {
+        if (memcmp(mac_addr, nodeMacs[i], 6) == 0) {
+            nodeIndex = i;
+            lastNodeRecv[i] = millis();
+            break;
+        }
     }
 
-    Isbil isbil;
-    memcpy(&isbil, data, sizeof(Isbil));
+    // ── Node 1: Isbil ──
+    if (nodeIndex == 0) {
+        if (len < (int)sizeof(Isbil)) {
+            Serial.println("Node 1: data for kort");
+            return;
+        }
+        Isbil isbil;
+        memcpy(&isbil, data, sizeof(Isbil));
 
-    Serial.printf("Mottatt fra node — balance: %.2f, speed: %.2f, battery: %.2f, iceCreams: %d\n",
-        isbil.balance, isbil.speed, isbil.batteryLevel, isbil.iceCreams);
+        Serial.printf("Node 1 (isbil) — balance: %.2f, speed: %.2f, battery: %.2f, iceCreams: %d\n",
+            isbil.balance, isbil.speed, isbil.batteryLevel, isbil.iceCreams);
 
-    // Pakk om til JSON og send til server
-    StaticJsonDocument<200> doc;
-    doc["balance"]      = isbil.balance;
-    doc["speed"]        = isbil.speed;
-    doc["batteryLevel"] = isbil.batteryLevel;
-    doc["iceCreams"]    = isbil.iceCreams;
-    doc["timestamp"]    = millis();
+        JsonDocument doc;
+        doc["balance"]      = isbil.balance;
+        doc["speed"]        = isbil.speed;
+        doc["batteryLevel"] = isbil.batteryLevel;
+        doc["iceCreams"]    = isbil.iceCreams;
+        doc["timestamp"]    = millis();
 
-    char jsonBuf[200];
-    serializeJson(doc, jsonBuf);
+        char jsonBuf[200];
+        serializeJson(doc, jsonBuf);
+        Serial.printf("Sender JSON: %s\n", jsonBuf);
+        ws.sendTXT(jsonBuf);
+    }
 
-    Serial.printf("Sender JSON: %s\n", jsonBuf);
-    ws.sendTXT(jsonBuf);
+    // ── Node 2: UWB ──
+    else if (nodeIndex == 1) {
+        if (len < (int)sizeof(UWBTag)) {
+            Serial.println("Node 2: data for kort");
+            return;
+        }
+        UWBTag tag;
+        memcpy(&tag, data, sizeof(UWBTag));
+
+        Serial.printf("Node 2 (UWB) — tag_id: %d\n", tag.tag_id);
+
+        JsonDocument doc;
+        JsonArray arr = doc.to<JsonArray>();
+        JsonObject entry   = arr.add<JsonObject>();
+        entry["tag_id"]    = tag.tag_id;
+        JsonObject anchors = entry["anchors"].to<JsonObject>();
+        fillAnchor(anchors["A1"].to<JsonObject>(), tag.A1);
+        fillAnchor(anchors["A2"].to<JsonObject>(), tag.A2);
+        fillAnchor(anchors["A3"].to<JsonObject>(), tag.A3);
+
+        char jsonBuf[512];
+        serializeJson(doc, jsonBuf);
+        Serial.printf("Sender JSON: %s\n", jsonBuf);
+        ws.sendTXT(jsonBuf);
+    }
+
+    else {
+        Serial.printf("Ukjent node — MAC: %02X:%02X:%02X:%02X:%02X:%02X\n",
+            mac_addr[0], mac_addr[1], mac_addr[2],
+            mac_addr[3], mac_addr[4], mac_addr[5]);
+    }
 }
 
 // ─── Mottatt fra server: JSON → ZumoInstructions → node ──
@@ -85,14 +147,13 @@ void onWsEvent(WStype_t type, uint8_t *payload, size_t length) {
         case WStype_TEXT: {
             Serial.printf("Fra server: %s\n", payload);
 
-            StaticJsonDocument<200> doc;
+            JsonDocument doc;
             DeserializationError err = deserializeJson(doc, payload);
             if (err) {
                 Serial.println("JSON parse feil");
                 break;
             }
 
-            // Bygg ZumoInstructions struct
             ZumoInstructions instr;
             instr.trafficLightState = doc["trafficLightState"] | false;
             const char *turn = doc["nextTurn"] | "F";
@@ -104,12 +165,10 @@ void onWsEvent(WStype_t type, uint8_t *payload, size_t length) {
             int receiverId = doc["receiverId"] | 0;
 
             if (receiverId == 0) {
-                // Send til alle noder
                 for (int i = 0; i < NODE_COUNT; i++) {
                     esp_now_send(nodeMacs[i], (uint8_t*)&instr, sizeof(ZumoInstructions));
                 }
             } else if (receiverId >= 1 && receiverId <= NODE_COUNT) {
-                // Send til spesifikk node
                 esp_now_send(nodeMacs[receiverId - 1], (uint8_t*)&instr, sizeof(ZumoInstructions));
                 Serial.printf("Sendt til node %d\n", receiverId);
             } else {
@@ -162,8 +221,25 @@ void setup() {
     ws.begin(WS_HOST, WS_PORT, WS_PATH);
     ws.onEvent(onWsEvent);
     ws.setReconnectInterval(3000);
+    ws.enableHeartbeat(15000, 3000, 2);
 }
 
 void loop() {
     ws.loop();
+
+    static unsigned long lastPrint = 0;
+    if (millis() - lastPrint > 3000) {
+        lastPrint = millis();
+        Serial.printf("[Status] WiFi: %s | WS: %s\n",
+            WiFi.status() == WL_CONNECTED ? "OK" : "FEIL",
+            ws.isConnected() ? "tilkoblet" : "frakoblet");
+        for (int i = 0; i < NODE_COUNT; i++) {
+            if (lastNodeRecv[i] == 0) {
+                Serial.printf("  Node %d: ingen data mottatt\n", i + 1);
+            } else {
+                unsigned long siden = (millis() - lastNodeRecv[i]) / 1000;
+                Serial.printf("  Node %d: sist hørt for %lu sek siden\n", i + 1, siden);
+            }
+        }
+    }
 }

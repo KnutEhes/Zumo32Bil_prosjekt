@@ -18,21 +18,21 @@ PROSJEKTPLAN: SMART-CITY (ZUMO & IOT-STACK)
 2. INFRASTRUKTUR OG NETTVERK (GATEWAY & MQTT)
 ==============================================
 [x] WiFi: Kode ESP32 til å koble seg automatisk til lokalt nett.
-[ ] Broker: Installere og konfigurere Mosquitto på Raspberry Pi.
-[ ] Topic-struktur: Definere meldingsstier (f.eks. smartcity/bil1/status).
-[ ] Sikkerhet: Sette opp brukernavn og passord for MQTT-klienter.
+[x] Broker: Installere og konfigurere Mosquitto på Raspberry Pi.
+[x] Topic-struktur: Definere meldingsstier (f.eks. smartcity/bil1/status).
+[x] Sikkerhet: Sette opp brukernavn og passord for MQTT-klienter.
 
 3. STYRING OG VISUALISERING (NODE-RED & DASHBOARD)
 ==================================================
-[ ] Node-RED: Installere på Raspberry Pi og sette opp flows.
-[ ] Oppstrøms: Tolke JSON-data fra ESP32 og vise i Dashboard.
-[ ] Nedstrøms: Lage knapper i Dashboard som sender MQTT-kommandoer.
-[ ] Styring: Implementere valg for sving (Venstre/Høyre) fra Dashboard.
+[x] Node-RED: Installere på Raspberry Pi og sette opp flows.
+[x] Oppstrøms: Tolke JSON-data fra ESP32 og vise i Dashboard.
+[x] Nedstrøms: Lage knapper i Dashboard som sender MQTT-kommandoer.
+[x] Styring: Implementere valg for sving (Venstre/Høyre) fra Dashboard.
 
 4. SKY OG EKSTERN TILGANG
 =========================
-[ ] Sky: Sette opp en "Cloud Broker" eller VPN for tilgang utenfor huset.
-[ ] Dashboard: Gjøre brukergrensesnittet tilgjengelig via nettleser.
+[x] Sky: Sette opp en "Cloud Broker" eller VPN for tilgang utenfor huset.
+[x] Dashboard: Gjøre brukergrensesnittet tilgjengelig via nettleser.
 
 --------------------------------------------------------------------------------
 5. BYGRID-SYSTEM (AVANSERT NAVIGASJON)

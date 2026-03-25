@@ -63,7 +63,7 @@ void iceCream(){
         Foreløpig fungerende kode
         Genererer antall barn i hele nabolaget*/
 
-        if (millis() > (lastKidCheck + kidCheckWaitTime)){
+        if ((millis() > (lastKidCheck + kidCheckWaitTime)) && (minIsbil.iceCreams > 0)){
             for (int i=0; i<7; i++){
                 for (int j=0; j<4; j++){
                     int terning = random(0, 1000);
@@ -96,7 +96,7 @@ void iceCream(){
         }
         //SELGER IS
         if (sellingIceCream == true){
-            if (lastIceCreamSold + iceCreamSellTime < millis()){
+            if ((lastIceCreamSold + iceCreamSellTime < millis()) && (minIsbil.iceCreams > 0)){
                 //SISTE SALG
                 if (kidMatrix[currentPos[0]][currentPos[1]] < 2){
                     kidMatrix[currentPos[0]][currentPos[1]] = 0;
@@ -105,7 +105,6 @@ void iceCream(){
                 else{
                     kidMatrix[currentPos[0]][currentPos[1]] -= 1;
                 }
-                
                 iceCreamSellTime = random(1000, 3000);
                 minIsbil.balance += random (20, 40);
                 minIsbil.iceCreams -= 1;
@@ -114,6 +113,8 @@ void iceCream(){
                 lastKidCheck = millis();
                 Serial.print("Penger totalt: ");
                 Serial.println(minIsbil.balance);
+                if (minIsbil.iceCreams == 0) sellingIceCream = false;
+
             }
         }
     }

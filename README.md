@@ -10,14 +10,14 @@ PROSJEKTPLAN: SMART-CITY (ZUMO & IOT-STACK)
 ===================================
 [x] Mekanisk: Designe/lage brett/feste for ESP32 på Zumo-bilen.
 [x] Strøm: Sikre stabil strømforsyning til både ESP32 og Zumo.
-[ ] Kommunikasjon: Sette opp Seriell (UART) mellom Zumo og ESP32.
-[ ] Linjefølging: Teste og finjustere sensorer for stabil kjøring.
+[x] Kommunikasjon: Sette opp Seriell (UART) mellom Zumo og ESP32.
+[x] Linjefølging: Teste og finjustere sensorer for stabil kjøring.
 [ ] Ladestasjon: Implementere deteksjon (f.eks. IR-sensor eller ultralyd).
-[ ] Lyskryss: Programmere stopp- og start-logikk basert på signaler.
+[/] Lyskryss: Programmere stopp- og start-logikk basert på signaler.
 
 2. INFRASTRUKTUR OG NETTVERK (GATEWAY & MQTT)
 ==============================================
-[ ] WiFi: Kode ESP32 til å koble seg automatisk til lokalt nett.
+[x] WiFi: Kode ESP32 til å koble seg automatisk til lokalt nett.
 [ ] Broker: Installere og konfigurere Mosquitto på Raspberry Pi.
 [ ] Topic-struktur: Definere meldingsstier (f.eks. smartcity/bil1/status).
 [ ] Sikkerhet: Sette opp brukernavn og passord for MQTT-klienter.

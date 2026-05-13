@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zumo Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main class="layout">
+    <section class="panel left-panel">
+      <h1>Zumo Dashboard</h1>
+
+      <div class="card">
+        <h2>Status</h2>
+        <p><strong>UI:</strong> <span id="uiStatus">Kobler til...</span></p>
+        <p><strong>Device:</strong> <span id="deviceStatus">Ingen</span></p>
+        <p><strong>Siste posisjon:</strong> <span id="positionText">–</span></p>
+        <p><strong>Siste seq:</strong> <span id="seqText">–</span></p>
+        <p><strong>Timestamp:</strong> <span id="timestampText">–</span></p>
+      </div>
+
+      <div class="card">
+        <h2>Kontroller</h2>
+        <div class="button-grid">
+          <button onclick="sendCmd('forward')">Forward</button>
+          <button onclick="sendCmd('left')">Left</button>
+          <button onclick="sendCmd('stop')" class="stop">STOP</button>
+          <button onclick="sendCmd('right')">Right</button>
+          <button onclick="sendCmd('back')">Back</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Anchor-data</h2>
+        <div id="anchorInfo"></div>
+      </div>
+
+      <div class="card">
+        <h2>Live log</h2>
+        <pre id="log"></pre>
+      </div>
+    </section>
+
+    <section class="panel right-panel">
+      <div class="card">
+        <h2>Kart</h2>
+        <canvas id="mapCanvas" width="480" height="650"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

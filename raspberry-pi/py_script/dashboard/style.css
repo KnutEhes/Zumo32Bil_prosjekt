@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: #f3f3f3;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 16px;
+  padding: 16px;
+  min-height: 100vh;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: #1d1d1d;
+  border: 1px solid #2c2c2c;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+h1, h2 {
+  margin-top: 0;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+button {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #2f6fed;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button.stop {
+  background: #c62828;
+  grid-column: span 2;
+}
+
+#log {
+  margin: 0;
+  background: #0e0e0e;
+  color: #59ff7a;
+  border-radius: 8px;
+  padding: 12px;
+  height: 260px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+#mapCanvas {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  border: 1px solid #444;
+  background: #ffffff;
+  display: block;
+}
+
+#anchorInfo {
+  display: grid;
+  gap: 8px;
+}
+
+.anchor-box {
+  background: #101010;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.anchor-valid {
+  color: #59ff7a;
+}
+
+.anchor-invalid {
+  color: #ff6b6b;
+}
